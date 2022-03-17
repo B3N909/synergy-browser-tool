@@ -1,0 +1,291 @@
+[
+    {
+        "type": "goto",
+        "url": "https://www.supremenewyork.com"
+    },
+    {
+        "type": "click",
+        "x": 0.12106153520828927,
+        "y": 0.6984375,
+        "mode": "mousedown"
+    },
+    {
+        "type": "wait",
+        "ms": 200
+    },
+    {
+        "type": "clickelement",
+        "mode": "mousedown",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV#products.section > UL > LI.selectable > DIV.clearfix > SPAN.info > SPAN.name!1"
+    },
+    {
+        "type": "clickelement",
+        "mode": "mousedown",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > DIV#product-details.product-SS22A39 > DIV#product-details-content > DIV#styles > UL.style-selector > LI#style-33222 > DIV.style-images > IMG.style-thumb"
+    },
+    {
+        "type": "clickelement",
+        "mode": "mousedown",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > DIV#product-widgets.with-fade.clearfix > DIV#widgets-container > SPAN#cart-update > SPAN.cart-button"
+    },
+    {
+        "type": "clickelement",
+        "mode": "mousedown",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > HEADER > DIV#cart-link > A#checkout-now > SPAN"
+    },
+    {
+        "type": "clickelement",
+        "mode": "mousedown",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label > INPUT#order_billing_name"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "Shift",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "N",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "o",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "n",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "y",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "e",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "a",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": " ",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "Shift",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "B",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "u",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "s",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "i",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "n",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "e",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "s",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "s",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "Tab",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "n",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "o",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "n",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "t",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "Backspace",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "y",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "e",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "a",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "Shift",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "@",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "g",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "m",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "a",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "i",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "l",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": ".",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "c",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "o",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "m",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "scroll",
+        "x": 0,
+        "y": 100,
+        "scrollX": 0,
+        "scrollY": 0
+    },
+    {
+        "type": "scroll",
+        "x": 0,
+        "y": 100,
+        "scrollX": 0,
+        "scrollY": 0
+    },
+    {
+        "type": "scroll",
+        "x": 0,
+        "y": 100,
+        "scrollX": 0,
+        "scrollY": 0
+    },
+    {
+        "type": "scroll",
+        "x": 0,
+        "y": 100,
+        "scrollX": 0,
+        "scrollY": 0
+    }
+]

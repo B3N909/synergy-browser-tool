@@ -1,0 +1,465 @@
+[
+    {
+        "type": "goto",
+        "url": "https://www.google.com"
+    },
+    {
+        "type": "click",
+        "x": 0.7077190777707961,
+        "y": 0.34714285714285714,
+        "mode": "mousedown"
+    },
+    {
+        "type": "click",
+        "x": 0.7077190777707961,
+        "y": 0.34714285714285714,
+        "mode": "mouseup"
+    },
+    {
+        "type": "key",
+        "key": "g",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "o",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "g",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "o",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "o",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "g",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "o",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "g",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "l",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "e",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "l",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": " ",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "e",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": " ",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "t",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "t",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "r",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "a",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "r",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "n",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "a",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "s",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "n",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "l",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "s",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "a",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "l",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "t",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "a",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "e",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "t",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "e",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "Enter",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "Enter",
+        "mode": "keyup"
+    },
+    {
+        "type": "scroll",
+        "x": 0,
+        "y": 100,
+        "scrollX": 0,
+        "scrollY": 0
+    },
+    {
+        "type": "scroll",
+        "x": 0,
+        "y": 100,
+        "scrollX": 0,
+        "scrollY": 0
+    },
+    {
+        "type": "scroll",
+        "x": 0,
+        "y": 100,
+        "scrollX": 0,
+        "scrollY": 0
+    },
+    {
+        "type": "scroll",
+        "x": 0,
+        "y": 100,
+        "scrollX": 0,
+        "scrollY": 0
+    },
+    {
+        "type": "scroll",
+        "x": 0,
+        "y": 100,
+        "scrollX": 0,
+        "scrollY": 0
+    },
+    {
+        "type": "click",
+        "x": 0.2808255594760501,
+        "y": 0.45,
+        "mode": "mousedown"
+    },
+    {
+        "type": "click",
+        "x": 0.2808255594760501,
+        "y": 0.45,
+        "mode": "mouseup"
+    },
+    {
+        "type": "key",
+        "key": "e",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "n",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "e",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "n",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "g",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "g",
+        "mode": "keyup"
+    },
+    {
+        "type": "click",
+        "x": 0.2375175213881773,
+        "y": 0.09857142857142857,
+        "mode": "mousedown"
+    },
+    {
+        "type": "click",
+        "x": 0.2375175213881773,
+        "y": 0.09857142857142857,
+        "mode": "mouseup"
+    },
+    {
+        "type": "click",
+        "x": 0.8098023104064962,
+        "y": 0.44142857142857145,
+        "mode": "mousedown"
+    },
+    {
+        "type": "click",
+        "x": 0.8098023104064962,
+        "y": 0.44142857142857145,
+        "mode": "mouseup"
+    },
+    {
+        "type": "click",
+        "x": 0.35197447919184105,
+        "y": 0.30428571428571427,
+        "mode": "mousedown"
+    },
+    {
+        "type": "click",
+        "x": 0.35197447919184105,
+        "y": 0.30428571428571427,
+        "mode": "mouseup"
+    },
+    {
+        "type": "click",
+        "x": 0.09521968195659529,
+        "y": 0.4742857142857143,
+        "mode": "mousedown"
+    },
+    {
+        "type": "click",
+        "x": 0.09521968195659529,
+        "y": 0.4742857142857143,
+        "mode": "mouseup"
+    },
+    {
+        "type": "click",
+        "x": 0.15399487650442265,
+        "y": 0.5114285714285715,
+        "mode": "mousedown"
+    },
+    {
+        "type": "click",
+        "x": 0.15399487650442265,
+        "y": 0.5114285714285715,
+        "mode": "mouseup"
+    },
+    {
+        "type": "key",
+        "key": "t",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "e",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "t",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "e",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "s",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "t",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "s",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "i",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "t",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "n",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "i",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "g",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "n",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "g",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": " ",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": " ",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "h",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "h",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "a",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "h",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "a",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "a",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "h",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "a",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "h",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "a",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "h",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "a",
+        "mode": "keyup"
+    }
+]

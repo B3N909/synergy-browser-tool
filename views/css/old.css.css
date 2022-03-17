@@ -1,0 +1,308 @@
+::-webkit-scrollbar-thumb {background-color: #c7c7c7; border-radius: 10px;}
+::-webkit-scrollbar-track {background: #f1f1f1 }
+::-webkit-scrollbar {width: 10px;}
+::-webkit-scrollbar-thumb:hover {background: #555}
+
+@font-face {
+    font-family: "Gilroy";
+    src: url("./fonts/Gilroy-Light.otf");
+    font-weight: 100;
+    font-style: normal;
+}
+@font-face {
+    font-family: "Gilroy";
+    src: url("./fonts/Gilroy-LightItalic.otf");
+    font-weight: 100;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Gilroy";
+    src: url("./fonts/Gilroy-Regular.otf");
+    font-weight: 200;
+    font-style: normal;
+}
+@font-face {
+    font-family: "Gilroy";
+    src: url("./fonts/Gilroy-RegularItalic.otf");
+    font-weight: 200;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Gilroy";
+    src: url("./fonts/Gilroy-Medium.otf");
+    font-weight: 300;
+    font-style: normal;
+}
+@font-face {
+    font-family: "Gilroy";
+    src: url("./fonts/Gilroy-MediumItalic.otf");
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Gilroy";
+    src: url("./fonts/Gilroy-SemiBold.otf");
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: "Gilroy";
+    src: url("./fonts/Gilroy-SemiBoldItalic.otf");
+    font-weight: 400;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Gilroy";
+    src: url("./fonts/Gilroy-Bold.otf");
+    font-weight: 500;
+    font-style: normal;
+}
+@font-face {
+    font-family: "Gilroy";
+    src: url("./fonts/Gilroy-BoldItalic.otf");
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Gilroy";
+    src: url("./fonts/Gilroy-ExtraBold.otf");
+    font-weight: 600;
+    font-style: normal;
+}
+@font-face {
+    font-family: "Gilroy";
+    src: url("./fonts/Gilroy-ExtraBoldItalic.otf");
+    font-weight: 600;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Gilroy";
+    src: url("./fonts/Gilroy-Heavy.otf");
+    font-weight: 700;
+    font-style: normal;
+}
+@font-face {
+    font-family: "Gilroy";
+    src: url("./fonts/Gilroy-HeavyItalic.otf");
+    font-weight: 700;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Gilroy";
+    src: url("./fonts/Gilroy-Black.otf");
+    font-weight: 800;
+    font-style: normal;
+}
+@font-face {
+    font-family: "Gilroy";
+    src: url("./fonts/Gilroy-BlackItalic.otf");
+    font-weight: 800;
+    font-style: italic;
+}
+
+
+* {
+    font-family: 'Gilroy', sans-serif;
+    margin: 0;
+    border: 0;
+    pointer-events: none;
+    outline: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+}
+
+body {
+
+}
+
+.navbar {
+    height: 45px;
+    width: 100%;
+    background-color: #101010;
+    border-radius: 20px 20px 0px 0px;
+}
+
+.navbar .drag {
+    -webkit-app-region: drag;
+    width: calc(100vw - 100px);
+    height: 40px;
+    float: left;
+}
+
+.navbar button {
+    margin-right: 15px;
+    margin-top: 12px;
+
+    width: 20px;
+    height: 20px;
+    border-radius: 50px;
+    background-color: white;
+    color: #383E4C;
+    float: right;
+
+    pointer-events: all;
+}
+
+.navbar .close {
+    font-weight: 800;
+    font-family: sans-serif;
+    font-size: 14px;
+    line-height: 4.5px;
+    padding-left: 5px;
+}
+
+.navbar .minimize {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 5px;
+    padding-left: 5px;
+}
+
+.body {
+    height: 100vh;
+    /* background-color: #F3F3F3; */
+    border-radius: 50px 50px 20px 20px;
+}
+
+.mainView {
+    width: 55%;
+    height: calc(100vh - 49px - 45px);
+    background-color: #121212;
+    float: left;
+    display: flex;
+    /* border-radius: 0 0 0 20px; */
+    /* box-shadow: inset 13px -1px 24px rgb(100 100 100 / 50%); */
+}
+
+.flex {
+    display: flex;
+    flex-direction: row;
+}
+
+.mainView .preview {
+    /* height: calc(100vh - 49px - 45px); */
+    box-shadow: 0px 2px 38px rgba(100,100,100,0.5);
+    cursor: pointer;
+    pointer-events: all;
+    /* margin-bottom: -4px; */
+    margin: auto;
+}
+
+.secondaryView {
+    width: 45%;
+    height: calc(100vh - 49px - 45px);
+    background-color: #1e1e1e;
+    float: right;
+    /* border-radius: 0 0 20px 0; */
+    /* box-shadow: inset 2px 2px 24px rgb(100 100 100 / 50%); */
+    display: flex;
+    flex-direction: column;
+}
+
+.secondaryView p {
+    color: #B6B6B6;
+    font-size: 22px;
+    font-weight: 400;
+    text-align: center;
+    margin-top: calc(50vh - 45px);
+}
+
+.secondaryView .previewList {
+    display: grid;
+    grid-template-columns: repeat( auto-fit, minmax(250px, 1fr) );
+    overflow-y: scroll;
+    max-height: calc(100vh - 80px);
+    width: 99.5%;
+    margin-top: 5px;
+    pointer-events: all;
+}
+
+.secondaryView .previewList .previewItem {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    width: 224px;
+    height: 220px;
+    pointer-events: all;
+    cursor: pointer;
+}
+
+.secondaryView .previewList .previewItem h1 {
+    color: #878787;
+    font-size: 19px;
+    font-weight: 300;
+    text-align: center;
+    margin-top: 8px;
+}
+
+.secondaryView .previewList .previewItem .preview {
+    border-radius: 8px;
+    /* width: 224px; */
+    height: 185px;
+    background-color: #F3F3F3;
+    box-shadow: 0px 2px 10px rgba(100,100,100,0.5);
+    overflow: hidden;
+    border: 5px solid #333333;
+}
+
+.secondaryView .previewList .previewItem .preview img {
+    width: 200px;
+    /*width: 186px;*/
+    /*height: 144px;*/
+    /* margin: auto; */
+    display: block;
+    /* padding-top: 18px; */
+    /*object-fit: scale-down;*/
+}
+
+.bottombar {
+    width: 100%;
+    height: 49px;
+    background-color: #272727;
+    border-radius: 0 0 20px 20px;
+    /* box-shadow: -9px 2px 24px rgba(100,100,100,0.5); */
+}
+
+.bottombar .replicateInputs {
+    width: 190px;
+    height: 26px;
+    background: url("./images/browserReplicateInputs_disabled.png");
+    background-size: 190px 26px;
+    margin-left: 15px;
+    margin-top: 11px;
+    pointer-events: all;
+}
+
+.new-task {
+    margin-bottom: 0px;
+    margin-top: auto;
+    height: 50px;
+    background-color: #eaeaea;
+    box-shadow: 4px -6px 17px 0px #b1b1b1;
+    font-size: 19px;
+    pointer-events: all;
+}
+
+.new-task::hover {
+    background-color: #d0d0d0;
+}
+
+.new-task::active {
+    background-color: #adadad;
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Slap IO - Browser Tool</title>
+
+    <link rel="stylesheet" type="text/css" href="./index.css">
+</head>
+<body>
+
+<div class="body">
+
+    <div class="navbar">
+        <div class="drag"></div>
+        <button id="close" class="close">X</button>
+        <button id="minimize" class="minimize">-</button>
+    </div>
+
+    <div class="flex">
+        <div class="mainView">
+            <img id="previewImage" class="preview" src="./images/browser_preview.png" alt="">
+        </div>
+        <div class="secondaryView">
+            <div id="previewList" class="previewList"></div>
+            <p id="noPreviewList">Nothing here.<br>Create a Browser Task to Start</p>
+            <!-- <button class="new-task">New Browser</button> -->
+        </div>
+    </div>
+
+    <div class="bottombar">
+        <button id="replicateInputs" class="replicateInputs">Replicate Inputs</button>
+    </div>
+
+</div>
+
+</body>
+</html>
+
+<script src="./index.js"></script>

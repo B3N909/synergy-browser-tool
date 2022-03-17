@@ -1,0 +1,79 @@
+[
+    {
+        "type": "keyelement"
+    },
+    {
+        "type": "goto",
+        "url": "https://www.supremenewyork.com"
+    },
+    {
+        "type": "key",
+        "key": "k",
+        "mode": "keyup"
+    },
+    {
+        "type": "clickelement",
+        "mode": "mousedown",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV#categories-list.section > DIV > UL > LI#accessories-category.selectable > SPAN"
+    },
+    {
+        "type": "clickelement",
+        "mode": "mousedown",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV#products.section > UL > LI.selectable > DIV.clearfix > SPAN.info > SPAN.new"
+    },
+    {
+        "type": "clickelement",
+        "mode": "mousedown",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > DIV#product-widgets.with-fade.clearfix > DIV#widgets-container > SPAN#cart-update > SPAN.cart-button"
+    },
+    {
+        "type": "clickelement",
+        "mode": "mousedown",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > HEADER > DIV#cart-link > A#checkout-now > SPAN"
+    },
+    {
+        "type": "clickelement",
+        "mode": "mousedown",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label > INPUT#order_billing_name"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "Shift",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "Shift",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "Tab",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "Shift",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "mode": "keydown",
+        "key": "Shift",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "keyelement",
+        "text": "@gmail.com",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "clickelement",
+        "mode": "mousedown",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label > INPUT#order_tel.form-control"
+    }
+]
