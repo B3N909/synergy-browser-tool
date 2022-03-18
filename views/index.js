@@ -8,9 +8,10 @@ const dialog = electron.remote.dialog;
 const path = require("path");
 const interact = require("interactjs");
 
-const amdLoader = require("../node_modules/monaco-editor/min/vs/loader.js");
+const amdLoader = require("monaco-editor/min/vs/loader.js");
 const amdRequire = amdLoader.require;
 const amdDefine = amdRequire.define;
+
 
 
 amdRequire.config({
@@ -20,7 +21,7 @@ amdRequire.config({
             pathName = '/' + pathName;
         }
         return encodeURI('file://' + pathName);
-    }) (path.join(__dirname, '../node_modules/monaco-editor/min'))
+    }) (path.join(__dirname, 'monaco-editor/min'))
 });
 self.module = undefined;
 
@@ -682,6 +683,7 @@ previewImage[0].addEventListener("mousemove", (e) => {
 });
 
 previewImage[0].addEventListener("mousedown", (e) => {
+    $(".popupType").remove();
     if(!previewItem) return;
     const bounds = previewImage[0].getBoundingClientRect();
     const x = (e.pageX - bounds.x) / bounds.width;
@@ -698,7 +700,7 @@ previewImage[0].addEventListener("mousedown", (e) => {
         useElements,
         rightClick: e.button === 2
     });
-    // console.log(`X: ${x} , Y: ${y}`);
+    // console.log(`X: ${x} , Y: ${y}`); -
 }, true);
 
 previewImage[0].addEventListener("mouseup", (e) => {

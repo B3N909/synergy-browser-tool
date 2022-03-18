@@ -58,7 +58,7 @@
 }
 
 .realBody {
-    background-color: #606b75 !important;
+    background-color: transparent !important;
     border-radius: 20px;
 }
 
@@ -458,6 +458,8 @@
       border-top: 0px;
       border-bottom: 0px;
   }
+
+
 
   .footer {
       background-color: #040404 !important;
