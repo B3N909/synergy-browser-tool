@@ -1,0 +1,503 @@
+.task .preview {
+    border-radius: 8px;
+    width: 224px;
+    height: 185px;
+    background-color: #F3F3F3;
+    box-shadow: 0px 2px 10px rgba(100,100,100,0.5);
+    overflow: hidden;
+    display: block;
+}
+
+.task .preview img {
+    width: 200px;
+    /*width: 186px;*/
+    /*height: 144px;*/
+    margin: auto;
+    display: block;
+    padding-top: 18px;
+    /*object-fit: scale-down;*/
+}
+
+.task {
+    /* width: unset !important; */
+    /* height: unset !important; */
+}
+
+.task h1 {
+    font-size: 20px;
+    color: white;
+    font-weight: 200;
+    width: 85%;
+}
+
+.task .cleanup {
+    width: unset !important;
+}
+
+.flexfill {
+    flex: 1;
+    height: 100%;
+    -webkit-app-region: drag;
+}
+
+.circle-icon-button:hover {
+    opacity: 0.8;
+}
+
+.circle-icon-button:active {
+    opacity: 0.7;
+}
+
+.circle-icon-button {
+    background-color: hsl(0deg 0% 100% / 15%) !important;
+}
+
+.body {
+    background-color: transparent !important;
+    border-radius: 20px;
+}
+
+.realBody {
+    background-color: transparent !important;
+    border-radius: 20px;
+}
+
+.topbar {
+    box-shadow: 0px 20px 20px -20px #000;
+    border-radius: 8px 8px 0px 0px;
+}
+
+.footer {
+    box-shadow: 0px -20px 11px -18px #000;
+    border-radius: 0px 0px 8px 8px;
+}
+
+
+* {
+    user-select: none;
+}
+
+.task {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    width: 224px;
+    height: 220px;
+    pointer-events: all;
+    cursor: pointer;
+    background-color: transparent !important;
+}
+
+.task h1 {
+    line-height: 22px !important;
+    color: #878787;
+    font-size: 19px;
+    font-weight: 300;
+    text-align: center;
+    margin-top: 8px;
+}
+
+.task .preview {
+    border-radius: 8px;
+    width: 224px;
+    height: 185px;
+    background-color: #F3F3F3;
+    box-shadow: 0px 2px 10px rgba(100,100,100,0.5);
+    overflow: hidden;
+}
+
+.previewregion .preview {
+    /* resize: vertical; */
+    /* overflow: scroll; */
+    height: 80vh;
+    min-height: 405px;
+    max-height: calc(100vh - 100px);
+}
+
+.previewregion .preview img.image {
+    width: auto !important;
+    height: 100% !important;
+}
+
+.taskslist {
+    display: grid;
+    grid-template-columns: repeat( auto-fit, minmax(250px, 1fr) );
+    overflow-y: scroll;
+    max-height: calc(100vh - 105px);
+    width: 99.5%;
+    margin-top: 5px;
+    pointer-events: all;
+}
+
+.circle:hover {
+    opacity: 0.7;
+}
+
+.circle:active {
+    opacity: 0.4;
+}
+
+.topbar .header {
+    opacity: 0.7;
+}
+
+.task h1 {
+    height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 2px;
+    background: transparent;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: transparent; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: rgb(34, 36, 42); 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(21, 21, 24); 
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+    outline: none;
+    border: none;
+    color: red;
+  }
+
+  .footer {
+      border: 1px solid #0d0f12;
+  }
+
+  .topbar {
+      border: 1px solid #0d0f12;
+  }
+
+
+  .taskspanel {
+      /* resize: horizontal; */
+      /* cursor: move; */
+      /* overflow: scroll; */
+      /* direction: rtl; */
+      min-width: 175px;
+      max-width: 50vw;
+  }
+
+
+  .previewregion .preview img.image {
+      height: 100%;
+      width: 39vh;
+  }
+
+  .recordsidebuttons {
+      margin-top: auto;
+      margin-bottom: 20px;
+  }
+
+
+
+
+
+
+
+.task {
+    width: 9vw;
+}
+
+.task .preview {
+    width: 100%;
+    height: unset;
+    background-color: transparent;
+    margin-top: 0px;
+    box-shadow: unset !important;
+}
+
+.task .preview img {
+    width: unset;
+    height: unset;
+    padding-top: 0px;
+    box-shadow: unset !important;
+}
+
+.task h1 {
+    font-size: 12px;
+    margin-top: 2px;
+    margin-bottom: -5px;
+}
+
+.taskspanel .taskslist {
+    padding: 0;
+    grid-template-rows: auto;
+    grid-template-columns: repeat(auto-fit, minmax(11vw, 12vw));
+    justify-content: center;
+}
+
+
+
+.virtualwindow {
+    position: absolute;
+    left: 25%;
+    top: 25%;
+    width: 600px;
+    height: 425px;
+    min-width: 300px;
+    min-height: 5vh;
+}
+
+.preview div h1.cleanup:hover {
+    opacity: 0.7;
+}
+
+.preview div h1.cleanup:hover {
+    opacity: 0.4;
+}
+
+.virtualwindow .topbar .controlbuttons {
+    z-index: 1000000000000000000000;
+    cursor: pointer;
+}
+
+.virtualbody {
+    background-color: #060606 !important;
+    border: 1px solid rgb(56, 56, 56);
+    border-radius: 0px 0px 8px;
+    border-top: 0px;
+    width: 100%;
+    height: 100%;
+    /* resize: both; */
+    overflow: hidden;
+}
+
+.virtualbody .circle {
+    z-index: 10000000;
+    cursor: pointer;
+}
+
+.virtualwindow::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+    background: transparent;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.ripple {
+    width: 10px;
+    height: 10px;
+    background-color: transparent;
+    position: fixed;
+    border-radius: 50%;
+    border: 1px solid red;
+ }
+ 
+ @keyframes ripple-effect {
+    to {
+       transform:scale(15);
+       opacity: 0.01;
+    }
+ }
+
+
+ #useSelectors {
+     margin-left: 30px;
+ }
+
+
+
+.popupType {
+    position: absolute;
+    left: 250px;
+    top: 250px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid #383838;
+}
+
+.popupType button {
+    width: 120px;
+    height: 30px;
+    font-size: 12px;
+    color: white;
+    background-color: #040404;
+}
+
+.popupType button:not(:last-child) {
+    border-bottom: 1px solid #383838;
+}
+
+.popupType button:hover {
+    opacity: 0.8;
+}
+
+.popupType button:active {
+    opacity: 0.5;
+}
+
+.previewContainer {
+
+}
+
+.boxRipple span {
+    position: absolute;
+    background: #fff;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    border-radius: 50%;
+    animation: rippleAnimation 0.2s linear infinite;
+  }
+  @keyframes rippleAnimation {
+    0% {
+      width: 0;
+      height: 0;
+      opacity: 0.5;
+    }
+    100% {
+      width: 500px;
+      height: 500px;
+      opacity: 0;
+    }
+  }
+
+.boxRipple {
+    position: fixed;
+    background-color: black;
+    opacity: 0.2;
+    overflow: hidden;
+}
+
+.previewContainer p {
+    color: white;
+    text-align: right;
+    padding-right: 50px;
+    margin-bottom: 0px;
+}
+
+.error {
+    position: fixed;
+    left: 10px;
+    bottom: 50px;
+    background-color:rgb(21, 21, 24);
+    cursor: pointer;
+}
+
+.error h1 {
+    font-size: 20px;
+    line-height: 20px;
+    margin-top: 5px;
+    margin-left: 5px;
+    color: #bf0202;
+    font-weight: 600;
+}
+
+.error h2 {
+    font-size: 14px;
+    line-height: 14px;
+    margin-top: 5px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+    margin-right: 25px;
+    color: gray;
+    font-weight: 400;
+
+}
+
+
+
+
+
+  /* Colors */
+
+  .taskspanel {
+      background-color: #0e0e0e !important;
+  }
+
+  .topbar {
+    background-color: #040404 !important;
+    border: 1px solid #383838;
+    border-bottom: 0px;
+    box-shadow: unset !important;
+    height: 32px;
+}
+
+  .mainbody {
+      background-color: #0a0a0a !important;
+      border: 1px solid #383838;
+      border-top: 0px;
+      border-bottom: 0px;
+  }
+
+
+
+  .footer {
+      background-color: #040404 !important;
+      border: 1px solid #383838;
+      border-top: 0px;
+      box-shadow: unset !important;
+  }
+
+
+  .notaskslabel2 {
+      color: #e0e0e0 !important;
+      font-weight: 300;
+      font-size: 14px;
+      font-style: italic;
+  }
+
+  .topbar .header {
+      opacity: 1 !important;
+      color: #ececec !important;
+      font-size: 12px;
+      font-family: inherit;
+      font-weight: 200;
+  }
+
+  .newtasklabel {
+      color: white;
+      font-weight: 300;
+      font-size: 14px;
+  }
+
+  .newtask {
+    border: none;
+  }
+
+  .switchlabel {
+      padding-bottom: 2px;
+  }
+
+  * {
+      font-family: 'Source Code Pro', monospace !important;
+  }
