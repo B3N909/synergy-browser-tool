@@ -1,26 +1,8 @@
 {
   "name": "synergy-browser-tool",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
-  "build": {
-    "appId": "synergy-browser-tool",
-    "productName": "Synergy Browser Tool",
-    "copyright": "Copyright (c) 2022 Savant#0001",
-    "directories": {
-      "app": "build",
-      "output": "dist"
-    },
-    "win": {
-      "target": [
-        {
-          "target": "portable",
-          "arch": [
-            "x64"
-          ]
-        }
-      ]
-    }
-  },
   "scripts": {
     "start": "electron .",
     "pack": "electron-builder --dir",
@@ -69,6 +51,5 @@
   "devDependencies": {
     "electron": "^13.0.0",
     "electron-builder": "^22.14.13"
-  },
-  "description": ""
+  }
 }
