@@ -1,0 +1,612 @@
+[
+    {
+        "type": "click",
+        "x": 0.198879255656587,
+        "y": 0.1515625,
+        "mode": "mousedown"
+    },
+    {
+        "type": "wait",
+        "ms": 200
+    },
+    {
+        "type": "key",
+        "key": "Shift",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "F",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "Shift",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "f",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "i",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "i",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "r",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "s",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "r",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "s",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "t",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "t",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "Shift",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "N",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "Shift",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "n",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "a",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "m",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "a",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "e",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "m",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "e",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "Shift",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "L",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "Shift",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "l",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "a",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "s",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "a",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "t",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "s",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "t",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": " ",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": " ",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "Shift",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "N",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "Shift",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "a",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "n",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "m",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "a",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "e",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "m",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "e",
+        "mode": "keyup"
+    },
+    {
+        "type": "click",
+        "x": 0.503383379149926,
+        "y": 0.2171875,
+        "mode": "mousedown"
+    },
+    {
+        "type": "wait",
+        "ms": 200
+    },
+    {
+        "type": "key",
+        "key": "e",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "e",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "m",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "a",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "m",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "a",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "i",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "l",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "i",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "Shift",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "L",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "@",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "@",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "Shift",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "g",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "m",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "g",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "a",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "m",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "i",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "a",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "l",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "i",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "l",
+        "mode": "keyup"
+    },
+    {
+        "type": "click",
+        "x": 0.3714315923028124,
+        "y": 0.2765625,
+        "mode": "mousedown"
+    },
+    {
+        "type": "wait",
+        "ms": 200
+    },
+    {
+        "type": "key",
+        "key": "2",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "2",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "3",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "1",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "3",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "1",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "2",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "3",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "2",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "3",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "1",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "2",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "1",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "2",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "3",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "3",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "2",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "2",
+        "mode": "keyup"
+    },
+    {
+        "type": "click",
+        "x": 0.2969972510044407,
+        "y": 0.3203125,
+        "mode": "mousedown"
+    },
+    {
+        "type": "wait",
+        "ms": 200
+    },
+    {
+        "type": "key",
+        "key": "1",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "5",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "1",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "5",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "7",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": " ",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "7",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": " ",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "Shift",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "T",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "Shift",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "e",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "t",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "e",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "s",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "t",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "s",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "t",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": " ",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "Shift",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": " ",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "S",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "Shift",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "s",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "t",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "t",
+        "mode": "keyup"
+    },
+    {
+        "type": "key",
+        "key": "r",
+        "mode": "keydown"
+    },
+    {
+        "type": "key",
+        "key": "r",
+        "mode": "keyup"
+    }
+]

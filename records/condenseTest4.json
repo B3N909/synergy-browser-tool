@@ -1,0 +1,63 @@
+[
+    {
+        "type": "keyarray",
+        "text": ""
+    },
+    {
+        "type": "click",
+        "x": 0.21579615140621697,
+        "y": 0.1578125,
+        "mode": "mousedown"
+    },
+    {
+        "type": "wait",
+        "ms": 200
+    },
+    {
+        "type": "keyarray",
+        "text": "FirstName"
+    },
+    {
+        "type": "click",
+        "x": 0.19211249735673505,
+        "y": 0.2078125,
+        "mode": "mousedown"
+    },
+    {
+        "type": "wait",
+        "ms": 200
+    },
+    {
+        "type": "keyarray",
+        "text": "email@gmail"
+    },
+    {
+        "type": "clickelement",
+        "mode": "mousedown",
+        "selector": "path:HTML > HEAD:first-child + BODY > DIV#container > DIV#main > DIV:first-child > FORM#mobile_checkout_form > DIV#checkout-form > DIV:first-child > H2:first-child + P + DIV + DIV + INPUT + INPUT + DIV > TABLE#billing-info > TBODY:first-child > TR:first-child + TR + TR > TD:first-child > INPUT#order_tel"
+    },
+    {
+        "type": "keyelementarray",
+        "text": "315-123-123",
+        "selector": "path:HTML > HEAD:first-child + BODY > DIV#container > DIV#main > DIV:first-child > FORM#mobile_checkout_form > DIV#checkout-form > DIV:first-child > H2:first-child + P + DIV + DIV + INPUT + INPUT + DIV > TABLE#billing-info > TBODY:first-child > TR:first-child + TR + TR > TD:first-child"
+    },
+    {
+        "type": "clickelement",
+        "mode": "mousedown",
+        "selector": "path:HTML > HEAD:first-child + BODY > DIV#container > DIV#main > DIV:first-child > FORM#mobile_checkout_form > DIV#checkout-form > DIV:first-child > H2:first-child + P + DIV + DIV + INPUT + INPUT + DIV > TABLE#billing-info > TBODY:first-child > TR:first-child + TR + TR + TR > TD:first-child > INPUT#order_billing_address"
+    },
+    {
+        "type": "keyelementarray",
+        "text": "315-123-123"
+    },
+    {
+        "type": "keyelementarray",
+        "text": "157 Address Ct",
+        "selector": "path:HTML > HEAD:first-child + BODY > DIV#container > DIV#main > DIV:first-child > FORM#mobile_checkout_form > DIV#checkout-form > DIV:first-child > H2:first-child + P + DIV + DIV + INPUT + INPUT + DIV > TABLE#billing-info > TBODY:first-child > TR:first-child + TR + TR + TR > TD:first-child"
+    },
+    {
+        "type": "clickelement",
+        "mode": "mousedown",
+        "selector": "path:HTML > HEAD:first-child + BODY > DIV#container > DIV#main > DIV:first-child > FORM#mobile_checkout_form > DIV#checkout-form > DIV:first-child > H2:first-child + P + DIV + DIV + INPUT + INPUT + DIV > TABLE#billing-info > TBODY:first-child > TR:first-child + TR + TR + TR + TR > TD:first-child > INPUT#order_billing_address_2"
+    }
+]

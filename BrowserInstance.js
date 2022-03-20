@@ -37,6 +37,8 @@ paths.map((path) => {
     require.main.paths.push(path);
 });
 
+
+
 class PageWrapper {
     constructor(page) {
         this.page = page;
@@ -181,20 +183,84 @@ class PageWrapper {
             const y = a[1];
             const type = a[2];
 
-            // does not provide unqiue selector in certain edge cases
-            const generateQuerySelector = (el) => {
-                if (el.tagName.toLowerCase() == "html")
-                    return "HTML";
-                var str = el.tagName;
-                str += (el.id != "") ? "#" + el.id : "";
-                if (el.className) {
-                    var classes = el.className.split(/\s/);
-                    for (var i = 0; i < classes.length; i++) {
-                        if(classes[i] === "") continue;
-                        str += "." + classes[i]
+            /**
+             * Get a unique CSS selector for a given DOM node
+             * @param {HTMLElement} element - DOM node
+             * @return {string} Unique CSS selector for the given DOM node
+             */
+            function getPath (element) {
+                /**
+                * Gets the element node that is a sibling to this element node (a direct child of the same parent) and is immediately
+                * previous to it in the DOM tree. It's a fix for IE that does not support :nth-child pseudoselector
+                * @param {HTMLElement} element - DOM node
+                * @return {string} Unique CSS selector for the given DOM node
+                */
+                const previousElementSiblingPolyfill = (element) =>{
+                    element = element.previousSibling;
+                    // Loop through ignoring anything not an element
+                    while(element !== null) {
+                        if(element.nodeType === Node.ELEMENT_NODE) {
+                            return element;
+                        } else {
+                            element = element.previousSibling;
+                        }
                     }
                 }
-                return generateQuerySelector(el.parentNode) + " > " + str;
+            
+            
+                /**
+                 * Gets the element node that is a sibling to this element node (a direct child of the same parent) and is immediately
+                 * previous to it in the DOM tree. It's a fix for IE that does not support :nth-child pseudoselector
+                 * @param {HTMLElement} element - DOM node
+                 * @return {string} Unique CSS selector for the given DOM node
+                 */
+                const previousElementSibling = (element) =>{
+                    if(element.previousElementSibling !== 'undefined') {
+                        return element.previousElementSibling
+                    } else {
+                        return previousElementSiblingPolyfill(element);
+                    }
+                }
+            
+                const getPath = (element) => {
+                    // False on non-elements
+                    if(!(element instanceof HTMLElement)) {
+                        return false;
+                    }
+                
+                    const path = [];
+                    // If element is null it's the end of partial. It's a loose element which has, sofar, not been attached to a parent in the node tree.
+                    while(element !== null && element.nodeType === Node.ELEMENT_NODE) {
+                        let selector = element.nodeName;
+                
+                        if (element.id) {
+                            selector += `#${element.id}`;
+                        } else {
+                            // Walk backwards until there is no previous sibling
+                            let sibling = element;
+                
+                            // Will hold nodeName to join for adjacent selection
+                            let siblingSelectors = [];
+                
+                            while(sibling !== null && sibling.nodeType === Node.ELEMENT_NODE) {
+                                siblingSelectors.unshift(sibling.nodeName);
+                                sibling = previousElementSibling(sibling);
+                            }
+                
+                            // :first-child does not apply to HTML
+                            if(siblingSelectors[0] !== 'HTML') {
+                                siblingSelectors[0] = siblingSelectors[0] + ':first-child';
+                            }
+                
+                            selector = siblingSelectors.join(' + ');
+                        }
+                        path.unshift(selector);
+                        element = element.parentNode;
+                    }
+                    return path.join(' > ');
+                }
+
+                return getPath(element);
             }
 
             if(type === "none") {
@@ -203,21 +269,12 @@ class PageWrapper {
                     var node = document.getSelection().anchorNode;
                     return (node.nodeType == 3 ? node.parentNode : node);
                  })();
-                 return "path:" + generateQuerySelector(lastElement);
+                 return "path:" + getPath(lastElement);
             }
 
             const uniquePath = () => {
                 const element = document.elementFromPoint(x, y);
-                const selector = generateQuerySelector(element);
-                
-                // verify path is unique
-                if(document.querySelector(selector) === element) {
-                    return selector;
-                } else {
-                    // path is not unique, take into account nth-child, still will not work in all edge cases
-                    const index = document.querySelectorAll(selector).indexOf(element);
-                    return `${selector}!${index}`;
-                }
+                return getPath(element);
             }
 
 
@@ -247,39 +304,24 @@ class PageWrapper {
         }, [x, y, type]);
     }
 
-    async toInput (element) {
-        await this.page.evaluate((element) => {
-            let e = element;
+    async toInputValue (element) {
+        let v = await this.page.evaluate((element) => {
             if(element.tagName !== "input") {
-                let nElement = element.querySelector("input");
-                if(nElement) {
-                    e = nElement;
-                }
+                let ni = element.querySelector("input");
+                return ni.value;
+            } else {
+                return element.value;
             }
-            return e.value;
-        }, element)
+        }, element);
+        if(!v) return "";
+        return v;
     }
 
     async getSelect (x, y) {
         return await this.page.evaluate((data) => {
-            function getUniqueSelector(node) {
-                let selector = "";
-                while (node.parentElement) {
-                    const siblings = Array.from(node.parentElement.children).filter(
-                        e => e.tagName === node.tagName
-                    );
-                    selector =
-                        (siblings.indexOf(node)
-                            ? `${node.tagName}:nth-of-type(${siblings.indexOf(node) + 1})`
-                            : `${node.tagName}`) + `${selector ? " > " : ""}${selector}`;
-                    node = node.parentElement;
-                }
-                return `html > ${selector.toLowerCase()}`;
-            }
-
-
             const element = document.elementFromPoint(data[0], data[1]);
-            if(element.nodeName === "SELECT") {
+
+            const collapse = (element) => {
                 const options = element.options;
 
                 let formattedOptions = [];
@@ -296,6 +338,15 @@ class PageWrapper {
                     rect: JSON.parse(JSON.stringify(element.getBoundingClientRect())),
                     selector: getUniqueSelector(element)
                 };
+            }
+
+            if(element.tagName === "SELECT") {
+                collapse(element);
+            } else {
+                let ns = element.querySelector("select");
+                if(ns) {
+                    collapse(ns);
+                }
             }
             return false;
         }, [x, y]);
@@ -565,50 +616,62 @@ class BrowserInstance {
 
             const fakeResolve = () => {
 
-                // let doSkip = false;
+                let skip = false;
 
-                // // populate fake queue
-                // if(type === "keyelement") {
+                if(typeof this.wasTyping === "undefined") this.wasTyping = false;
 
-                //     doSkip = true;
+                if(type === "keyelement") {
+                    skip = true; // don't add
+                    this.wasTyping = true;
+                    this.wasTypingNormal = false;
+                    
+                    // if we are a different selector && we are typing- we need to push what we have queued before its overriden
+                    if(this.lastKeySelector && this.lastKeySelector !== data.selector && this.wasTyping) {
+                        if(this.wasTypingNormal) {
+                            this.fakeQueue.push({
+                                type: "keyarray",
+                                text: this.lastInputValue
+                            });
+                        } else {
+                            this.fakeQueue.push({
+                                type: "keyelementarray",
+                                text: this.lastInputValue,
+                                selector: this.lastKeySelector
+                            });
+                        }
+                    }
+                    this.lastKeySelector = data.selector;
 
                     
-                //     // if((this.lastKeySelector && this.lastKeySelector !== data.selector) || data.key === "Tab") {
-                //     //     // different input,
-                //     //     if(this.lastInputValue) {
-                //     //         this.fakeQueue.push({
-                //     //             type: "keyelementarray",
-                //     //             text: this.lastInputValue,
-                //     //             selector: this.lastKeySelector
-                //     //         });
-                //     //         this.lastInputValue = "";
-                //     //     }
-                //     // }
-                //     // doSkip = true;
-                //     // this.lastKeySelector = data.selector;
-                // }
-                // } else if(this.lastInputValue) {
-                //     this.fakeQueue.push({
-                //         type: "keyelementarray",
-                //         text: this.lastInputValue,
-                //         selector: this.lastKeySelector
-                //     });
-                //     this.lastInputValue = "";
-                // }
+                    // TODO: if key selector are different, set wasTyping false and push queue
+                } else if(type === "key") {
+                    skip = true;
+                    this.wasTyping = true;
+                    this.wasTypingNormal = true;
+                } else {
+                    if(this.wasTyping) {
+                        if(this.wasTypingNormal) {
+                            this.fakeQueue.push({
+                                type: "keyarray",
+                                text: this.lastInputValue
+                            });
+                        } else {
+                            this.fakeQueue.push({
+                                type: "keyelementarray",
+                                text: this.lastInputValue,
+                                selector: this.lastKeySelector
+                            });
+                        }
+                    }
+                    this.wasTyping = false;
+                }
 
-                // if we are not skipping, and there is a word append it first
-
-                // if(!doSkip) {
-                //     this.fakeQueue.push({
-                //         type,
-                //         ...data
-                //     });
-                // }
-
-                this.fakeQueue.push({
-                    type,
-                    ...data
-                });
+                if(!skip) {
+                    this.fakeQueue.push({
+                        type,
+                        ...data
+                    });
+                }
 
                 // add wait after click while recording
                 if(this.recording && type === "click" && this.addClickWait) {
@@ -617,6 +680,7 @@ class BrowserInstance {
                         ms: this.clickWait
                     });
                 }
+
                 let change = 0;
                 if(this.lastTime) change = Date.now() - this.lastTime;
                 this.lastTime = Date.now();
@@ -704,18 +768,7 @@ class BrowserInstance {
             let splits = selector.split(":");
             const type = splits[0];
             let value = splits.splice(1, splits.length).join(":");
-            let index = -1;
-            if(value.includes("!")) {
-                index = parseInt(value.split("!")[1]);
-                value = value.replace("!" + index, "");
-            }
-
-            // TODO: Figure out how to best incorporate absolute elements
-            // get JSHandle of DOM element from selector
-            // -> use for waitForElement
-            // -> use for click
-            // -> -> use element x, y
-            // -> use for key?            
+  
 
             if(type === "path") {
                 // get JSHandle of DOM element
@@ -723,15 +776,9 @@ class BrowserInstance {
                     visible: true
                 });
 
-                if(index === -1) {
-                    const elementHandle = await this.page.$(value);
-                    if(!elementHandle) return false;
-                    return elementHandle;
-                } else {
-                    const elementsHandle = await this.page.$$(value);
-                    if(!elementsHandle) return false;
-                    return elementsHandle[index];
-                }
+                const elementHandle = await this.page.$(value);
+                if(!elementHandle) return false;
+                return elementHandle;
             } else if(type === "text") {
                 // get JSHandle of DOM element
                 return await this._page.getElementByText(value);
@@ -739,6 +786,8 @@ class BrowserInstance {
                 let keywords = value.split(",");
                 
                 return await this._page.getElementByKeywords(keywords);
+            } else {
+                console.log(`Invalid type: ${selector}`.red);
             }
         } else {
             console.log(`Invalid selector: ${selector}`.red);
@@ -791,11 +840,10 @@ class BrowserInstance {
         // await this.waitForSelector(q.selector);
         const element = await this.elementFromSelector(q.selector);
         await element.press(q.key);
-        const value = await this._page.toInput(element);
+
+        const value = await this._page.toInputValue(element);
         this.lastInputValue = value;
-        // const properties = await element.getProperties();
-        // console.log(JSON.stringify(properties));
-        // await this.page.keyboard.press(q.key);
+
         await this._waitFor();
     }
     async key (key, mode, absolute) {
@@ -809,11 +857,17 @@ class BrowserInstance {
     }
     async _key (q) {
         await this._queue("key", q);
+        
         if(q.mode === "keydown") {
             await this.page.keyboard.down(q.key);
         } else if(q.mode === "keyup") {
             await this.page.keyboard.up(q.key);
         }
+
+        const selector = await this.selector(); // gets last selector
+        const element = await this.elementFromSelector(selector);
+        this.lastInputValue = await this._page.toInputValue(element);
+
         await this._waitFor();
     }
 

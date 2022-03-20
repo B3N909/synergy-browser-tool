@@ -311,8 +311,10 @@ let readyBrowsers = [];
 
 
 // TODO: BEFORE BETA RELEASE
-// TODO: FIX SELECT
-// TODO: Auto condense keyelement and key into keyarray for easier reading on save of recording
+// TODO:
+// TODO: Change SELECT
+// TODO: -> Change Select so that on recording, it skips the last click event and swaps for select event
+// TODO: -> Change Select so that it works with clickElement
 
 
 

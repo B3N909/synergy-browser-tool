@@ -1,0 +1,51 @@
+[
+    {
+        "type": "click",
+        "x": 0.10140654454057711,
+        "y": 0.14,
+        "mode": "mousedown"
+    },
+    {
+        "type": "wait",
+        "ms": 200
+    },
+    {
+        "type": "keyarray"
+    },
+    {
+        "type": "click",
+        "x": 0.1663686016723863,
+        "y": 0.21714285714285714,
+        "mode": "mousedown"
+    },
+    {
+        "type": "wait",
+        "ms": 200
+    },
+    {
+        "type": "keyarray"
+    },
+    {
+        "type": "click",
+        "x": 0.16018173908840447,
+        "y": 0.26285714285714284,
+        "mode": "mousedown"
+    },
+    {
+        "type": "wait",
+        "ms": 200
+    },
+    {
+        "type": "keyarray"
+    },
+    {
+        "type": "click",
+        "x": 0.20967663976025908,
+        "y": 0.3242857142857143,
+        "mode": "mousedown"
+    },
+    {
+        "type": "wait",
+        "ms": 200
+    }
+]

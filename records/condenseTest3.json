@@ -1,0 +1,44 @@
+[
+    {
+        "type": "keyelementarray",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "clickelement",
+        "mode": "mousedown",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label > INPUT#order_billing_name"
+    },
+    {
+        "type": "keyelementarray",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "clickelement",
+        "mode": "mousedown",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label.unhappy > INPUT#order_email.unhappy"
+    },
+    {
+        "type": "keyelementarray"
+    },
+    {
+        "type": "keyelementarray",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label.unhappy"
+    },
+    {
+        "type": "clickelement",
+        "mode": "mousedown",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label > INPUT#order_tel.form-control"
+    },
+    {
+        "type": "keyelementarray"
+    },
+    {
+        "type": "keyelementarray",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label"
+    },
+    {
+        "type": "clickelement",
+        "mode": "mousedown",
+        "selector": "path:HTML > BODY.us.en.not-native-app.idevice > DIV#container > DIV#main > DIV > FORM#mobile_checkout_form.test-b > DIV#checkout-form > DIV.checkout-section-container > DIV.form-wrap > TABLE#billing-info > TBODY > TR > TD.field.has-float-label > INPUT#order_billing_address.form-control"
+    }
+]
