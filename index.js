@@ -1,12 +1,17 @@
+const isDev = true;
+
 const express = require("express");
 const path = require("path");
 const expressApp = express();
 
 
+// serve views/monaco-editor on views endpoint
+expressApp.use("/views", express.static(path.join(__dirname, "views")));
+
 expressApp.use(express.static(path.join(__dirname, "views")));
-expressApp.use("/", (req, res) => {
-    res.sendFile(`${__dirname}/views/index.html`);
-});
+// expressApp.use("/", (req, res) => {
+//     res.sendFile(`${__dirname}/views/index.html`);
+// });
 
 expressApp.listen(3030, () => {
     console.log("Local server started!");
@@ -53,7 +58,9 @@ const createWindow = () => {
 
     global.browserToolWindow.show();
     global.browserToolWindow.loadURL(`http://localhost:3030/`);
-    global.browserToolWindow.openDevTools({ mode: "detach"});
+    if(isDev) {
+        global.browserToolWindow.openDevTools({ mode: "detach"});
+    }
 }
 
 const appReady = async () => {
@@ -65,9 +72,11 @@ app.whenReady().then(() => {
     appReady();
 });
 
+// DEV-IMPORTS-START
 const BrowserManager = require("./BrowserManager.js");
 const BrowserInstance = require("./BrowserInstance.js");
-const { request } = require("http");
+// DEV-IMPORTS-END
+
 const browserManager = new BrowserManager(BrowserInstance);
 
 const cleanup = async () => {

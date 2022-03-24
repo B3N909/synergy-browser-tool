@@ -697,12 +697,10 @@ class BrowserInstance {
             let splits = selector.split(":");
             const type = splits[0];
             let value = splits.splice(1, splits.length).join(":");
-            let index = -1;
-            if(value.includes("!")) {
-                index = parseInt(value.split("!")[1]);
-                value = value.replace("!" + index, "");
+            if(value.includes("'")) {
+                value = value.replace(/'/g, "");
             }
-
+            
             // TODO: Figure out how to best incorporate absolute elements
             // get JSHandle of DOM element from selector
             // -> use for waitForElement
@@ -820,6 +818,11 @@ class BrowserInstance {
     }
 
 
+    _eventLog (name, data) {
+        console.log(name.toString().bgRed);
+        console.log(typeof data === "undefined" ? "undefined?" : data);
+    }
+
     async clickElement(selector) {
         await this._clickElement({ selector });
     }
@@ -828,6 +831,7 @@ class BrowserInstance {
         // await this.waitForSelector(q.selector);
         this.lastClickedSelector = q.selector;
         const element = await this.elementFromSelector(q.selector);
+        this._eventLog("ELEMENT", element);
         const box = await element.boundingBox();
         global.browserToolWindow.webContents.send("rippleEffect", {
             x: box.x / this.width,

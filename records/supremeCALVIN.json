@@ -1,0 +1,161 @@
+[
+    {
+        "type": "clickelement",
+        "mode": "mousedown",
+        "selector": "path:HTML > HEAD:first-child + BODY > DIV#container > DIV#main > DIV#categories-list > DIV:first-child > UL:first-child > LI#accessories-category > SPAN:first-child"
+    },
+    {
+        "type": "clickelement",
+        "mode": "mousedown",
+        "selector": "text:'Supreme®/Hanes® Crew Socks (4 Pack)'"
+    },
+    {
+        "type": "clickelement",
+        "mode": "mousedown",
+        "selector": "path:HTML > HEAD:first-child + BODY > DIV#container > DIV#main > DIV:first-child > DIV#product-widgets > DIV#widgets-container > SPAN#cart-update > SPAN:first-child"
+    },
+    {
+        "type": "clickelement",
+        "mode": "mousedown",
+        "selector": "path:HTML > HEAD:first-child + BODY > DIV#container > DIV:first-child + HEADER > DIV#cart-link > A#checkout-now > SPAN:first-child"
+    },
+    {
+        "type": "clickelement",
+        "mode": "mousedown",
+        "selector": "path:HTML > HEAD:first-child + BODY > DIV#container > DIV#main > DIV:first-child > FORM#mobile_checkout_form > DIV#checkout-form > DIV:first-child > H2:first-child + P + DIV + DIV + INPUT + INPUT + DIV > TABLE#billing-info > TBODY:first-child > TR:first-child > TD:first-child > INPUT#order_billing_name"
+    },
+    {
+        "type": "keyelementarray",
+        "text": "FirstName LastName",
+        "selector": "path:HTML > HEAD:first-child + BODY > DIV#container > DIV#main > DIV:first-child > FORM#mobile_checkout_form > DIV#checkout-form > DIV:first-child > H2:first-child + P + DIV + DIV + INPUT + INPUT + DIV > TABLE#billing-info > TBODY:first-child > TR:first-child > TD:first-child"
+    },
+    {
+        "type": "clickelement",
+        "mode": "mousedown",
+        "selector": "path:HTML > HEAD:first-child + BODY > DIV#container > DIV#main > DIV:first-child > FORM#mobile_checkout_form > DIV#checkout-form > DIV:first-child > H2:first-child + P + DIV + DIV + INPUT + INPUT + DIV > TABLE#billing-info > TBODY:first-child > TR:first-child + TR > TD:first-child > INPUT#order_email"
+    },
+    {
+        "type": "keyelementarray",
+        "text": "FirstName LastName",
+        "selector": "path:HTML > HEAD:first-child + BODY > DIV#container > DIV#main > DIV:first-child > FORM#mobile_checkout_form > DIV#checkout-form > DIV:first-child > H2:first-child + P + DIV + DIV + INPUT + INPUT + DIV > TABLE#billing-info > TBODY:first-child > TR:first-child > TD:first-child"
+    },
+    {
+        "type": "keyelementarray",
+        "text": "email@gmail.com",
+        "selector": "path:HTML > HEAD:first-child + BODY > DIV#container > DIV#main > DIV:first-child > FORM#mobile_checkout_form > DIV#checkout-form > DIV:first-child > H2:first-child + P + DIV + DIV + INPUT + INPUT + DIV > TABLE#billing-info > TBODY:first-child > TR:first-child + TR > TD:first-child"
+    },
+    {
+        "type": "clickelement",
+        "mode": "mousedown",
+        "selector": "path:HTML > HEAD:first-child + BODY > DIV#container > DIV#main > DIV:first-child > FORM#mobile_checkout_form > DIV#checkout-form > DIV:first-child > H2:first-child + P + DIV + DIV + INPUT + INPUT + DIV > TABLE#billing-info > TBODY:first-child > TR:first-child + TR + TR > TD:first-child > INPUT#order_tel"
+    },
+    {
+        "type": "keyelementarray",
+        "text": "email@gmail.com",
+        "selector": "path:HTML > HEAD:first-child + BODY > DIV#container > DIV#main > DIV:first-child > FORM#mobile_checkout_form > DIV#checkout-form > DIV:first-child > H2:first-child + P + DIV + DIV + INPUT + INPUT + DIV > TABLE#billing-info > TBODY:first-child > TR:first-child + TR > TD:first-child"
+    },
+    {
+        "type": "keyelementarray",
+        "text": "512-356-1232",
+        "selector": "path:HTML > HEAD:first-child + BODY > DIV#container > DIV#main > DIV:first-child > FORM#mobile_checkout_form > DIV#checkout-form > DIV:first-child > H2:first-child + P + DIV + DIV + INPUT + INPUT + DIV > TABLE#billing-info > TBODY:first-child > TR:first-child + TR + TR > TD:first-child"
+    },
+    {
+        "type": "clickelement",
+        "mode": "mousedown",
+        "selector": "path:HTML > HEAD:first-child + BODY > DIV#container > DIV#main > DIV:first-child > FORM#mobile_checkout_form > DIV#checkout-form > DIV:first-child > H2:first-child + P + DIV + DIV + INPUT + INPUT + DIV > TABLE#billing-info > TBODY:first-child > TR:first-child + TR + TR + TR > TD:first-child > INPUT#order_billing_address"
+    },
+    {
+        "type": "keyelementarray",
+        "text": "512-356-1232",
+        "selector": "path:HTML > HEAD:first-child + BODY > DIV#container > DIV#main > DIV:first-child > FORM#mobile_checkout_form > DIV#checkout-form > DIV:first-child > H2:first-child + P + DIV + DIV + INPUT + INPUT + DIV > TABLE#billing-info > TBODY:first-child > TR:first-child + TR + TR > TD:first-child"
+    },
+    {
+        "type": "keyelementarray",
+        "text": "157 Mary Ct",
+        "selector": "path:HTML > HEAD:first-child + BODY > DIV#container > DIV#main > DIV:first-child > FORM#mobile_checkout_form > DIV#checkout-form > DIV:first-child > H2:first-child + P + DIV + DIV + INPUT + INPUT + DIV > TABLE#billing-info > TBODY:first-child > TR:first-child + TR + TR + TR > TD:first-child"
+    },
+    {
+        "type": "clickelement",
+        "mode": "mousedown",
+        "selector": "path:HTML > HEAD:first-child + BODY > DIV#container > DIV#main > DIV:first-child > FORM#mobile_checkout_form > DIV#checkout-form > DIV:first-child > H2:first-child + P + DIV + DIV + INPUT + INPUT + DIV > TABLE#billing-info > TBODY:first-child > TR:first-child + TR + TR + TR + TR + TR > TD:first-child > TABLE#address_inputs_table > TBODY:first-child > TR:first-child > TD:first-child > INPUT#order_billing_zip"
+    },
+    {
+        "type": "keyelementarray",
+        "text": "157 Mary Ct",
+        "selector": "path:HTML > HEAD:first-child + BODY > DIV#container > DIV#main > DIV:first-child > FORM#mobile_checkout_form > DIV#checkout-form > DIV:first-child > H2:first-child + P + DIV + DIV + INPUT + INPUT + DIV > TABLE#billing-info > TBODY:first-child > TR:first-child + TR + TR + TR > TD:first-child"
+    },
+    {
+        "type": "keyelementarray",
+        "text": "21912",
+        "selector": "path:HTML > HEAD:first-child + BODY > DIV#container > DIV#main > DIV:first-child > FORM#mobile_checkout_form > DIV#checkout-form > DIV:first-child > H2:first-child + P + DIV + DIV + INPUT + INPUT + DIV > TABLE#billing-info > TBODY:first-child > TR:first-child + TR + TR + TR + TR + TR > TD:first-child > TABLE#address_inputs_table > TBODY:first-child > TR:first-child > TD:first-child"
+    },
+    {
+        "type": "clickelement",
+        "mode": "mousedown",
+        "selector": "path:HTML > HEAD:first-child + BODY > DIV#container > DIV#main > DIV:first-child > FORM#mobile_checkout_form > DIV#checkout-form > DIV:first-child > DIV#credit-card > DIV:first-child > TABLE#credit-card-table > TBODY:first-child > TR#cc_n_row > TD:first-child > INPUT#credit_card_number"
+    },
+    {
+        "type": "keyelementarray",
+        "text": "21912",
+        "selector": "path:HTML > HEAD:first-child + BODY > DIV#container > DIV#main > DIV:first-child > FORM#mobile_checkout_form > DIV#checkout-form > DIV:first-child > H2:first-child + P + DIV + DIV + INPUT + INPUT + DIV > TABLE#billing-info > TBODY:first-child > TR:first-child + TR + TR + TR + TR + TR > TD:first-child > TABLE#address_inputs_table > TBODY:first-child > TR:first-child > TD:first-child"
+    },
+    {
+        "type": "keyelementarray",
+        "text": "4121 4141 4124 1421",
+        "selector": "path:HTML > HEAD:first-child + BODY > DIV#container > DIV#main > DIV:first-child > FORM#mobile_checkout_form > DIV#checkout-form > DIV:first-child > DIV#credit-card > DIV:first-child > TABLE#credit-card-table > TBODY:first-child > TR#cc_n_row > TD:first-child"
+    },
+    {
+        "type": "clickelement",
+        "mode": "mousedown",
+        "selector": "path:HTML > HEAD:first-child + BODY > DIV#container > DIV#main > DIV:first-child > FORM#mobile_checkout_form > DIV#checkout-form > DIV:first-child > DIV#credit-card > DIV:first-child > TABLE#credit-card-table > TBODY:first-child > TR#exp_date_row > TD:first-child > TABLE:first-child > TBODY:first-child > TR:first-child > TD#vvr > DIV#vvv-container > INPUT#credit_card_verification_value"
+    },
+    {
+        "type": "keyelementarray",
+        "text": "4121 4141 4124 1421",
+        "selector": "path:HTML > HEAD:first-child + BODY > DIV#container > DIV#main > DIV:first-child > FORM#mobile_checkout_form > DIV#checkout-form > DIV:first-child > DIV#credit-card > DIV:first-child > TABLE#credit-card-table > TBODY:first-child > TR#cc_n_row > TD:first-child"
+    },
+    {
+        "type": "keyelementarray",
+        "text": "555",
+        "selector": "path:HTML > HEAD:first-child + BODY > DIV#container > DIV#main > DIV:first-child > FORM#mobile_checkout_form > DIV#checkout-form > DIV:first-child > DIV#credit-card > DIV:first-child > TABLE#credit-card-table > TBODY:first-child > TR#exp_date_row > TD:first-child > TABLE:first-child > TBODY:first-child > TR:first-child > TD#vvr > DIV#vvv-container"
+    },
+    {
+        "type": "scroll",
+        "x": 0,
+        "y": 100,
+        "scrollX": 0,
+        "scrollY": 0
+    },
+    {
+        "type": "scroll",
+        "x": 0,
+        "y": 100,
+        "scrollX": 0,
+        "scrollY": 0
+    },
+    {
+        "type": "scroll",
+        "x": 0,
+        "y": 100,
+        "scrollX": 0,
+        "scrollY": 0
+    },
+    {
+        "type": "wait",
+        "ms": 1000
+    },
+    {
+        "type": "clickelement",
+        "mode": "mousedown",
+        "selector": "path:HTML > HEAD:first-child + BODY > DIV#container > DIV#main > DIV:first-child > FORM#mobile_checkout_form > DIV#checkout-form > DIV:first-child > DIV#credit-card > DIV#totals > DIV:first-child + P + P > LABEL#order_terms_label > INPUT#order_terms"
+    },
+    {
+        "type": "wait",
+        "ms": 1000
+    },
+    {
+        "type": "clickelement",
+        "mode": "mousedown",
+        "selector": "path:HTML > HEAD:first-child + BODY > DIV#container > DIV#main > DIV:first-child > FORM#mobile_checkout_form > DIV#checkout-form > DIV:first-child > P#checkout-buttons > BUTTON#submit_button > SPAN:first-child"
+    }
+]

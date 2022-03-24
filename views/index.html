@@ -42,7 +42,7 @@
         // The signed-in user info.
         const user = result.user;
 
-        $(".topbar .header").text("Synergy Browser Tool v2.0");
+        $(".topbar .header").text("Synergy Browser Tool v2.2");
         $(".mainbody").fadeIn(100);
         $(".footer").fadeIn(100);
       }).catch((err) => {
@@ -67,6 +67,14 @@
   <script src="https://unpkg.com/@popperjs/core@2"></script>
   <script src="https://unpkg.com/tippy.js@6"></script>
 
+  <link href="picomplete.css" rel="stylesheet">
+  <script src="picomplete.js"></script>
+
+
+  <!-- <link rel="stylesheet" href="monaco-editor/min/vs/editor/editor.main.css" />
+  <script src="monaco-editor/min/vs/loader.js"></script>
+  <script src="monaco-editor/min/vs/editor/editor.main.nls.js"></script>
+  <script src="monaco-editor/min/vs/editor/editor.main.js"></script> -->
 
   <!-- <script src="../node_modules/firebase/firebase-app.js"></script>
   <script src="../node_modules/firebase/firebase-auth.js"></script>
@@ -106,6 +114,7 @@
             <div class="sidebuttoncontainer">
               <div class="circle-icon-button m-b"><img src="images/copy.png" loading="lazy" alt="" class="circle-image ci-small"></div>
               <div class="circle-icon-button"><img src="images/search.png" loading="lazy" alt="" class="circle-image ci-small"></div>
+              <div class="circle-icon-button"><img src="images/channels.png" loading="lazy" alt="" class="circle-image ci-small"></div>
             </div>
           </div>
         </div>

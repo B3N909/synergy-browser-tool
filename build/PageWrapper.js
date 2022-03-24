@@ -1,4 +1,6 @@
+// PAGE-WRAPPER-START
 class PageWrapper {
+
     constructor(page) {
         this.page = page;
     }
@@ -82,9 +84,176 @@ class PageWrapper {
         }, handle);
     }
 
+    compareTwoStrings(first, second) {
+        first = first.replace(/\s+/g, '')
+        second = second.replace(/\s+/g, '')
+    
+        if (first === second) return 1; // identical or empty
+        if (first.length < 2 || second.length < 2) return 0; // if either is a 0-letter or 1-letter string
+    
+        let firstBigrams = new Map();
+        for (let i = 0; i < first.length - 1; i++) {
+            const bigram = first.substring(i, i + 2);
+            const count = firstBigrams.has(bigram)
+                ? firstBigrams.get(bigram) + 1
+                : 1;
+    
+            firstBigrams.set(bigram, count);
+        };
+    
+        let intersectionSize = 0;
+        for (let i = 0; i < second.length - 1; i++) {
+            const bigram = second.substring(i, i + 2);
+            const count = firstBigrams.has(bigram)
+                ? firstBigrams.get(bigram)
+                : 0;
+    
+            if (count > 0) {
+                firstBigrams.set(bigram, count - 1);
+                intersectionSize++;
+            }
+        }
+    
+        return (2.0 * intersectionSize) / (first.length + second.length - 2);
+    }
+    
+    findBestMatch(mainString, targetStrings) {
+        if (!this.areArgsValid(mainString, targetStrings)) throw new Error('Bad arguments: First argument should be a string, second should be an array of strings');
+        
+        const ratings = [];
+        let bestMatchIndex = 0;
+    
+        for (let i = 0; i < targetStrings.length; i++) {
+            const currentTargetString = targetStrings[i];
+            const currentRating = this.compareTwoStrings(mainString, currentTargetString)
+            ratings.push({target: currentTargetString, rating: currentRating})
+            if (currentRating > ratings[bestMatchIndex].rating) {
+                bestMatchIndex = i
+            }
+        }
+        
+        
+        const bestMatch = ratings[bestMatchIndex]
+        
+        return { ratings: ratings, bestMatch: bestMatch, bestMatchIndex: bestMatchIndex };
+    }
+    
+    areArgsValid(mainString, targetStrings) {
+        if (typeof mainString !== 'string') return false;
+        if (!Array.isArray(targetStrings)) return false;
+        if (!targetStrings.length) return false;
+        if (targetStrings.find( function (s) { return typeof s !== 'string'})) return false;
+        return true;
+    }
+
+
     async getElementByText(text) {
+        let v = await this.page.evaluateHandle((text) => {
+
+            function compareTwoStrings(first, second) {
+                first = first.replace(/\s+/g, '')
+                second = second.replace(/\s+/g, '')
+            
+                if (first === second) return 1; // identical or empty
+                if (first.length < 2 || second.length < 2) return 0; // if either is a 0-letter or 1-letter string
+            
+                let firstBigrams = new Map();
+                for (let i = 0; i < first.length - 1; i++) {
+                    const bigram = first.substring(i, i + 2);
+                    const count = firstBigrams.has(bigram)
+                        ? firstBigrams.get(bigram) + 1
+                        : 1;
+            
+                    firstBigrams.set(bigram, count);
+                };
+            
+                let intersectionSize = 0;
+                for (let i = 0; i < second.length - 1; i++) {
+                    const bigram = second.substring(i, i + 2);
+                    const count = firstBigrams.has(bigram)
+                        ? firstBigrams.get(bigram)
+                        : 0;
+            
+                    if (count > 0) {
+                        firstBigrams.set(bigram, count - 1);
+                        intersectionSize++;
+                    }
+                }
+            
+                return (2.0 * intersectionSize) / (first.length + second.length - 2);
+            }
+            
+            function findBestMatch(mainString, targetStrings) {
+                if (!areArgsValid(mainString, targetStrings)) throw new Error('Bad arguments: First argument should be a string, second should be an array of strings');
+                
+                const ratings = [];
+                let bestMatchIndex = 0;
+            
+                for (let i = 0; i < targetStrings.length; i++) {
+                    const currentTargetString = targetStrings[i];
+                    const currentRating = compareTwoStrings(mainString, currentTargetString)
+                    ratings.push({target: currentTargetString, rating: currentRating})
+                    if (currentRating > ratings[bestMatchIndex].rating) {
+                        bestMatchIndex = i
+                    }
+                }
+                
+                
+                const bestMatch = ratings[bestMatchIndex]
+                
+                return { ratings: ratings, bestMatch: bestMatch, bestMatchIndex: bestMatchIndex };
+            }
+            
+            function areArgsValid(mainString, targetStrings) {
+                if (typeof mainString !== 'string') return false;
+                if (!Array.isArray(targetStrings)) return false;
+                if (!targetStrings.length) return false;
+                if (targetStrings.find( function (s) { return typeof s !== 'string'})) return false;
+                return true;
+            }
+
+
+            const all = document.querySelectorAll("*");
+            
+            let best = false;
+            
+            let matches = [];
+
+            for(let i = 0; i < all.length; i++) {
+                let a = all[i];
+                let content = "";
+                if(a.textContent) {
+                    let THRESHOLD = 5;
+                    if(a.textContent.length > text.length - THRESHOLD && a.textContent.length < text.length + THRESHOLD) {
+                        content = a.textContent;
+                    }
+                }
+                matches.push(content);
+            }
+
+            let match = findBestMatch(text, matches);
+            let bestMatchIndex = match.bestMatchIndex;
+
+            if(match.bestMatch.rating > 0.5) {
+                return all[bestMatchIndex];
+            }
+            return false;
+        }, text);
+        if((await v.jsonValue()) === false) {
+            return await new Promise(r => {
+                setTimeout(async () => {
+                    r(await this.getElementByText(text));
+                }, 200);
+            });
+        }
+        return v;
+
+
+
+
         return await this.page.evaluateHandle((path) => {
             const p = `//*[text()=` + path + `]`;
+            console.log(p);
             return document.evaluate(p, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
         }, text);
     }
@@ -142,20 +311,84 @@ class PageWrapper {
             const y = a[1];
             const type = a[2];
 
-            // does not provide unqiue selector in certain edge cases
-            const generateQuerySelector = (el) => {
-                if (el.tagName.toLowerCase() == "html")
-                    return "HTML";
-                var str = el.tagName;
-                str += (el.id != "") ? "#" + el.id : "";
-                if (el.className) {
-                    var classes = el.className.split(/\s/);
-                    for (var i = 0; i < classes.length; i++) {
-                        if(classes[i] === "") continue;
-                        str += "." + classes[i]
+            /**
+             * Get a unique CSS selector for a given DOM node
+             * @param {HTMLElement} element - DOM node
+             * @return {string} Unique CSS selector for the given DOM node
+             */
+            function getPath (element) {
+                /**
+                * Gets the element node that is a sibling to this element node (a direct child of the same parent) and is immediately
+                * previous to it in the DOM tree. It's a fix for IE that does not support :nth-child pseudoselector
+                * @param {HTMLElement} element - DOM node
+                * @return {string} Unique CSS selector for the given DOM node
+                */
+                const previousElementSiblingPolyfill = (element) =>{
+                    element = element.previousSibling;
+                    // Loop through ignoring anything not an element
+                    while(element !== null) {
+                        if(element.nodeType === Node.ELEMENT_NODE) {
+                            return element;
+                        } else {
+                            element = element.previousSibling;
+                        }
                     }
                 }
-                return generateQuerySelector(el.parentNode) + " > " + str;
+            
+            
+                /**
+                 * Gets the element node that is a sibling to this element node (a direct child of the same parent) and is immediately
+                 * previous to it in the DOM tree. It's a fix for IE that does not support :nth-child pseudoselector
+                 * @param {HTMLElement} element - DOM node
+                 * @return {string} Unique CSS selector for the given DOM node
+                 */
+                const previousElementSibling = (element) =>{
+                    if(element.previousElementSibling !== 'undefined') {
+                        return element.previousElementSibling
+                    } else {
+                        return previousElementSiblingPolyfill(element);
+                    }
+                }
+            
+                const getPath = (element) => {
+                    // False on non-elements
+                    if(!(element instanceof HTMLElement)) {
+                        return false;
+                    }
+                
+                    const path = [];
+                    // If element is null it's the end of partial. It's a loose element which has, sofar, not been attached to a parent in the node tree.
+                    while(element !== null && element.nodeType === Node.ELEMENT_NODE) {
+                        let selector = element.nodeName;
+                
+                        if (element.id) {
+                            selector += `#${element.id}`;
+                        } else {
+                            // Walk backwards until there is no previous sibling
+                            let sibling = element;
+                
+                            // Will hold nodeName to join for adjacent selection
+                            let siblingSelectors = [];
+                
+                            while(sibling !== null && sibling.nodeType === Node.ELEMENT_NODE) {
+                                siblingSelectors.unshift(sibling.nodeName);
+                                sibling = previousElementSibling(sibling);
+                            }
+                
+                            // :first-child does not apply to HTML
+                            if(siblingSelectors[0] !== 'HTML') {
+                                siblingSelectors[0] = siblingSelectors[0] + ':first-child';
+                            }
+                
+                            selector = siblingSelectors.join(' + ');
+                        }
+                        path.unshift(selector);
+                        element = element.parentNode;
+                    }
+                    return path.join(' > ');
+                }
+
+                return getPath(element);
             }
 
             if(type === "none") {
@@ -164,21 +397,12 @@ class PageWrapper {
                     var node = document.getSelection().anchorNode;
                     return (node.nodeType == 3 ? node.parentNode : node);
                  })();
-                 return "path:" + generateQuerySelector(lastElement);
+                 return "path:" + getPath(lastElement);
             }
 
             const uniquePath = () => {
                 const element = document.elementFromPoint(x, y);
-                const selector = generateQuerySelector(element);
-                
-                // verify path is unique
-                if(document.querySelector(selector) === element) {
-                    return selector;
-                } else {
-                    // path is not unique, take into account nth-child, still will not work in all edge cases
-                    const index = document.querySelectorAll(selector).indexOf(element);
-                    return `${selector}!${index}`;
-                }
+                return getPath(element);
             }
 
 
@@ -208,17 +432,17 @@ class PageWrapper {
         }, [x, y, type]);
     }
 
-    async toInput (element) {
-        await this.page.evaluate((element) => {
-            let e = element;
+    async toInputValue (element) {
+        let v = await this.page.evaluate((element) => {
             if(element.tagName !== "input") {
-                let nElement = element.querySelector("input");
-                if(nElement) {
-                    e = nElement;
-                }
+                let ni = element.querySelector("input");
+                return ni.value;
+            } else {
+                return element.value;
             }
-            return e.value;
-        }, element)
+        }, element);
+        if(!v) return "";
+        return v;
     }
 
     async getSelect (x, y) {
@@ -268,7 +492,4 @@ class PageWrapper {
         });
     }
 }
-
-
-
-module.exports = PageWrapper;
+ module.exports = PageWrapper;

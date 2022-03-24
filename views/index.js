@@ -12,16 +12,10 @@ const amdLoader = require("monaco-editor/min/vs/loader.js");
 const amdRequire = amdLoader.require;
 const amdDefine = amdRequire.define;
 
-
+let isEditing = 0;
 
 amdRequire.config({
-    baseUrl: ( (_path) => {
-        let pathName = path.resolve(_path).replace(/\\/g, '/');
-        if (pathName.length > 0 && pathName.charAt(0) !== '/') {
-            pathName = '/' + pathName;
-        }
-        return encodeURI('file://' + pathName);
-    }) (path.join(__dirname, 'monaco-editor/min'))
+    baseUrl: "views/monaco-editor/min"
 });
 self.module = undefined;
 
@@ -97,9 +91,12 @@ const browserBackButton = $($(".circle-icon-button")[0]);
 const browserForwardButton = $($(".circle-icon-button")[1]);
 const browserDuplicateButton = $($(".circle-icon-button")[2]);
 const browserSearchButton = $($(".circle-icon-button")[3]);
+const spamButton = $($(".circle-icon-button")[4]);
 
 
-const createVirtualWindow = (filePath, fileName, json) => {
+const createVirtualWindow = (filePath, json, callback) => {
+    isEditing++;
+    let fileName = filePath.replace(/^.*[\\\/]/, '');
     const virtualWindow = $(`<div class="virtualwindow">
     <div class="topbar">
       <div class="header">${fileName}</div>
@@ -114,7 +111,7 @@ const createVirtualWindow = (filePath, fileName, json) => {
     const topbar = virtualWindow.find(".topbar");
 
     virtualWindow.hide();
-    virtualWindow.fadeIn(200);
+    virtualWindow.fadeIn(100);
     virtualWindow.insertAfter($("#vhere"));
     // virtualWindow.draggable();
 
@@ -164,17 +161,83 @@ const createVirtualWindow = (filePath, fileName, json) => {
     });
 
 
-    virtualWindow.find(".circle").click(() => virtualWindow.fadeOut(200, () => virtualWindow.remove()));
+    virtualWindow.find(".circle").click(() => {
+        isEditing--;
+        virtualWindow.fadeOut(100, () => virtualWindow.remove())
+    });
     createMonacoEditor(virtualWindow.find(".virtualbody")[0], json, (e, editor) => {
         const stringValue = editor.getValue().toString().replaceAll("\n", "").replaceAll("\t", "");
         try {
             const jsonValue = JSON.parse(stringValue);
             fs.writeFileSync(filePath, JSON.stringify(jsonValue), "utf8");
             console.log("Saved content!");
+            if(callback) {
+                callback(jsonValue);
+            }
         } catch (err) {}
     });
 };
+let isPromptingVariable = false;
 
+const promptVariable = (uuid) => {
+    return new Promise(r => {
+        if(!uuid) uuid = previewItem;
+        isPromptingVariable = true;
+        const input = $(`<div class="variableInput"><input type="text" placeholder="Variable name"></div>`);
+        input.appendTo($("body"));
+    
+        const done = (value) => {
+            isPromptingVariable = false;
+            input.remove();
+            $("body").css("background-color", "transparent");
+            $(".realBody").css("opacity", "1");
+
+            r(value);
+        }
+
+        console.log("UUID: " + uuid);
+        if(varsSheets.has(uuid) && varsSheets.get(uuid).data && varsSheets.get(uuid).data.vars) {
+        
+            
+            let json = varsSheets.get(uuid).data;
+            let keys = Object.keys(json.vars);
+    
+    
+            let data = [];
+            for(let i = 0; i < keys.length; i++) {
+                let key = keys[i];
+                data.push({
+                    text: key,
+                    value: key,
+                });
+            }
+            new PickleComplate({
+                data,
+                config: {
+                    type: "local",
+                    target: ".variableInput",
+                    clickCallback: (target, node) => {
+                        done(node.value);
+                    }
+                }
+            });
+    
+            input.children("input").on("keydown", (e) => {
+                if(e.keyCode === 13) {
+                    done(input.children("input").val());
+                } else if(e.key === "Escape") {
+                    done(false);
+                }
+            });
+            
+            $("body").css("background-color", "black");
+            $(".realBody").css("opacity", "0.4");
+        } else {
+            // prompt error, no variable sheet
+            done(false);
+        }
+    });
+}
 
 const tasksPanel = $(".taskspanel");
 const mainPreview = $(".previewregion .preview");
@@ -206,6 +269,8 @@ interact(tasksPanel[0]).resizable({
 
 setInterval(() => {
     $(".newtask").css("width", $(".taskspanel").css("width"));
+
+    $(".previewContainer p").css("width", $(".previewContainer .preview img.image").css("width"));
 }, 10);
 
 
@@ -240,18 +305,23 @@ optionButtons.insertAfter($($(".sidebuttoncontainer")[0]));
 tippy("#replicateInputs", { content: "Duplicate browser interactions across all browsers running" });
 tippy("#useSelectors", { content: "When interacting, use elements selectors instead of absolute pixel data" });
 
-tippy($(".circle-icon-button")[0], { content: "Go back" });
-tippy($(".circle-icon-button")[1], { content: "Go forward" });
-tippy($(".circle-icon-button")[2], { content: "Wait for 1s" });
-tippy($(".circle-icon-button")[3], { content: "Playback recording" });
-tippy($(".circle-icon-button")[4], { content: "Start recording" });
-tippy($(".circle-icon-button")[5], { content: "Edit recording" });
-tippy($(".circle-icon-button")[6], { content: "Duplicate browser" });
-tippy($(".circle-icon-button")[7], { content: "Change URL" });
-tippy($(".newtask")[0], { content: "Create a new browser" });
+tippy($(".circle-icon-button")[0], { allowHTML: true, content: "Go back" });
+tippy($(".circle-icon-button")[1], { allowHTML: true, content: "Go forward" });
+tippy($(".circle-icon-button")[2], { allowHTML: true, content: "<strong>Wait for 1s</strong><br>Useful when recording, can be edited later for a different time" });
+tippy($(".circle-icon-button")[3], { allowHTML: true, content: "Playback recording" });
+tippy($(".circle-icon-button")[4], { allowHTML: true, content: "<strong>Start recording</strong><br>Records all click, type, and scrolls to a JSON" });
+tippy($(".circle-icon-button")[5], { allowHTML: true, content: "Edit recording" });
+tippy($(".circle-icon-button")[6], { allowHTML: true, content: "Duplicate browser" });
+tippy($(".circle-icon-button")[7], { allowHTML: true, content: "Change URL" });
+tippy($(".circle-icon-button")[8], { allowHTML: true, content: '<strong style="text-align: center;">Spam Mode</strong><br>When clicking on a button that sends a network request, the request will be spammed at a interval' });
+tippy($(".newtask")[0], { followCursor: "horizontal", content: "Create a new browser" });
+
+$($(".circle-icon-button")[8]).css("margin-top", "5px");
 
 
-
+ipcRenderer.on("foundXHR", () => {
+    boxRipple(1, 1, 0, 0);
+});
 
 // relative percentages only
 let boxRipple = (width, height, x, y) => {
@@ -290,6 +360,9 @@ const rippleEffect = (parent, x, y) => {
 
 let readyBrowsers = [];
 
+const FastAverageColor = require("fast-average-color");
+const fastAverageColor = new FastAverageColor();
+
 
 
 
@@ -310,19 +383,73 @@ let readyBrowsers = [];
 // TODO: * Abstracted terminology inside the recording JSON file to make complex tasks easy and readable
 
 
+
+
 // TODO: BEFORE BETA RELEASE
+// TODO: Fix keyarray & keyelementarray
 // TODO:
 // TODO: Change SELECT
 // TODO: -> Change Select so that on recording, it skips the last click event and swaps for select event
 // TODO: -> Change Select so that it works with clickElement
+// TODO: -> Tab on keyarray & keyelementarray
 
 
+// TODO: GOOD IDEA! ELECTRON IPC COMMUNICATION WRAPPER FOR 2 WAY MESSAGES, OR MULTI WAY MESSAGES
+
+// TODO: Dialog wrapper to auto re-open the same directory
+
+
+// TODO: Wrapper that creates fullscreen windows for different monitors by stitching the body using css to be -x position and wider width?
+// TODO: Otherwise just a general multiscreen wrapper?
 
 // TODO: ADD REQUEST LIBRARY !? !?
 // TODO: ADD JS LIBRARY      !? !?
 // TODO:
 // TODO: Remove wait after relative click in place for waitForElement of element at that position?
 
+
+// TODO: TOMORROW 3/24/2020
+// TODO: !!! BIG PROBLEM !!! this._recentClick this is undefined in _click when retrying !!! BIG PROBLEM !!!
+// TODO: Select crashes, does not work
+// TODO: Only accept mouse down if cursor is over preview img
+// TODO: Test with a lot of browsers
+// TODO: Lots of testing
+// TODO: Get build out!
+
+
+// TODO: DONE! async events inside BrowserManage ipcMain.on
+// TODO: DONE! Border glow around selected browser
+// TODO: DONE! Queue text is not right align correctly
+// TODO: DONE! if waitFor is too long, refresh page + retry
+
+
+// TODO: * ADDRESS THE FACT THAT ON DROPS ITS NOT GOING TO BE AS SIMPLE AS USING A QUEUE SYSTEM, ADD TO CART WILL BE AN ISSUE, MAYBE ADD RETRY AFTER X BUILT IN?
+// TODO: * BUG TEST.
+// TODO: * BUG TEST THE FUCK OUTTA THIS
+// TODO: * EVEN MORE BUG TESTING HOMES
+// TODO: * MAKE BUILD AVAILABLE, GET PR GOING HOMES
+
+// TODO: Record request interactions that happen from a click event
+// TODO: -> if requests happen && request recording mode is on, prompt for add request && lock page
+// TODO: Network recording playback
+// TODO: OVERRIDE XHR REQUESTS
+// TODO: -> Only useful for multiplying requests to the same response handler
+// TODO: -> FIND A WAY TO CALL RESPONSE HANDLER AFTER THE FACT
+
+// TODO: REBUILD CHROMIUM WITH SAME PROFILING
+// TODO: -> REMOVE DEBUGGER
+// TODO: -> -> Maybe implement advanced XHR duplication
+
+
+/**
+ * IDEAS
+ * + CDP Animations
+ * + SPAM MODE
+ * 
+ * 
+ */
+
+// TODO: SPAM MODE, When enabled catch requests that happen from click, and spam them until successful
 
 
 // TODO: DO BEFORE FINAL FIRST RELEASE
@@ -378,8 +505,9 @@ let lastClickX, lastClickY;
 let lastClickXRel, lastClickYRel;
 
 
-ipcRenderer.on("promptEventType", () => {
-    popupType();
+ipcRenderer.on("promptEventType", (e, d) => {
+    let middleClick = d.middleClick;
+    popupType(middleClick);
 });
 
 ipcRenderer.on("showError", (e, data) => {
@@ -406,7 +534,7 @@ let showError = (url) => {
     });
 }
 
-const popupType = () => {
+const popupType = (middleClick) => {
     if($(".popupType").length > 0) {
         $($(".popupType").children("button")[0]).click();
         // ipcRenderer.send("eventTypeSelected", {
@@ -425,19 +553,50 @@ const popupType = () => {
     // e.css("top", `${lastClickY - (parseFloat(e.css("height").split("px")[0]) / 2)}px`);
     e.css("left", `${lastClickX}px`);
     e.css("top", `${lastClickY}px`);
-    e.children("button").click((a, b, c) => {
+    e.children("button").click(async (a, b, c) => {
         const val = $(a.target).text();
-        ipcRenderer.send("eventTypeSelected", {
-            type: val,
-        });
+        if(middleClick) {
+            const variableName = await promptVariable();
+            if(!variableName) {
+                ipcRenderer.send("eventTypeSelected", {
+                    type: val,
+                });
+            } else {
+                ipcRenderer.send("eventTypeSelected", {
+                    type: val,
+                    variableName,
+                });
+            }
+        } else {
+            ipcRenderer.send("eventTypeSelected", {
+                type: val,
+            });
+        }
         e.fadeOut(125, () => e.remove());
     });
 }
 
-
+let isSpamming = false;
 let isRecording = false;
 let isPlayback = false;
 let isStoppingPlayback = false;
+
+spamButton.click(() => {
+    isSpamming = !isSpamming;
+    if(isSpamming) {
+        spamButton.css("opacity", "0.5");
+        ipcRenderer.send("spam", {
+            spam: isSpamming,
+            uuid: previewItem
+        });
+    } else {
+        spamButton.css("opacity", "1");
+        ipcRenderer.send("spam", {
+            spam: isSpamming,
+            uuid: previewItem
+        });
+    }
+});
 
 playbackButton.click(() => {
     if(isStoppingPlayback) {
@@ -486,7 +645,9 @@ editPlaybackButton.click(async() => {
 
         const json = JSON.parse(fs.readFileSync(filePath, "utf8"));
 
-        createVirtualWindow(filePath, filePath.replace(/^.*[\\\/]/, ''), JSON.stringify(json, null, "\t"));
+        createVirtualWindow(filePath, JSON.stringify(json, null, "\t"), (json) => {
+
+        });
     }
 });
 
@@ -541,10 +702,21 @@ newTask.click(async () => {
     });
 
     if(url) {
-        ipcRenderer.send("newTask", {
-            uuid: (Math.round(Math.random() * 1000000)).toString(),
-            url
+
+        let emulation = await prompt({
+            title: "Emulation Mode",
+            label: "Select an Emulation Mode",
+            type: "select",
+            selectOptions: ["iPhone", "None"]
         });
+
+        if(emulation) {
+            ipcRenderer.send("newTask", {
+                uuid: (Math.round(Math.random() * 1000000)).toString(),
+                url,
+                emulation
+            });
+        }
     }
 });
 
@@ -658,6 +830,8 @@ let mouseCursorTick = -1;
 let lastMouseX, lastMouseY;
 
 previewImage[0].addEventListener("mouseenter", (e) => {
+    if(isEditing !== 0) return;
+    if(isPromptingVariable) return;
     if(mouseCursorTick !== -1) clearInterval(mouseCursorTick);
     mouseCursorTick = setInterval(() => {
         ipcRenderer.send("browserCursorHover", {
@@ -674,6 +848,8 @@ previewImage[0].addEventListener("mouseleave", (e) => {
 });
 
 previewImage[0].addEventListener("mousemove", (e) => {
+    if(isEditing !== 0) return;
+    if(isPromptingVariable) return;
     const bounds = previewImage[0].getBoundingClientRect();
     const x = (e.pageX - bounds.x) / bounds.width;
     const y = (e.pageY - bounds.y) / bounds.height;
@@ -685,6 +861,8 @@ previewImage[0].addEventListener("mousemove", (e) => {
 });
 
 previewImage[0].addEventListener("mousedown", (e) => {
+    if(isEditing !== 0) return;
+    if(isPromptingVariable) return;
     $(".popupType").remove();
     if(!previewItem) return;
     const bounds = previewImage[0].getBoundingClientRect();
@@ -700,12 +878,15 @@ previewImage[0].addEventListener("mousedown", (e) => {
         y,
         replicateInputs,
         useElements,
-        rightClick: e.button === 2
+        rightClick: e.button === 2,
+        middleClick: e.button === 1
     });
     // console.log(`X: ${x} , Y: ${y}`); -
 }, true);
 
 previewImage[0].addEventListener("mouseup", (e) => {
+    if(isEditing !== 0) return;
+    if(isPromptingVariable) return;
     if(!previewItem) return;
     const bounds = previewImage[0].getBoundingClientRect();
     const x = (e.pageX - bounds.x) / bounds.width;
@@ -722,6 +903,8 @@ previewImage[0].addEventListener("mouseup", (e) => {
 }, true);
 
 previewImage[0].addEventListener("wheel", (e) => {
+    if(isEditing !== 0) return;
+    if(isPromptingVariable) return;
     if(!previewItem) return;
     clearSelect();
     ipcRenderer.send("browserWheelChange", {
@@ -736,6 +919,8 @@ previewImage[0].addEventListener("wheel", (e) => {
 }, true);
 
 window.addEventListener("keydown", (e) => {
+    if(isEditing !== 0) return;
+    if(isPromptingVariable) return;
     if(!previewItem) return;
     ipcRenderer.send("browserKeyDown", {
         uuid: previewItem,
@@ -746,6 +931,8 @@ window.addEventListener("keydown", (e) => {
 }, true);
 
 window.addEventListener("keyup", (e) => {
+    if(isEditing !== 0) return;
+    if(isPromptingVariable) return;
     if(!previewItem) return;
     ipcRenderer.send("browserKeyUp", {
         uuid: previewItem,
@@ -762,21 +949,86 @@ $("#queue").hide();
 ipcRenderer.on("queueUpdate", (e, data) => {
     if(data.uuid === previewItem) {
         $("#queueText").text(data.queue);
-    } else {
-        console.log(data);
     }
+});
+
+const varsSheets = new Map();
+const setVars = (uuid, path, data) => {
+    updateTaskName(uuid, data.name);
+    varsSheets.set(uuid, { path, data });
+}
+
+ipcRenderer.on("variable", (e, data) => {
+    if(varsSheets.has(data.uuid)) {
+        const value = varsSheets.get(data.uuid).data.vars[data.variable];
+        ipcRenderer.send("variableResponse", {
+            value
+        });
+    } else {
+        // MAKE ERROR IN UI, STOP EXECUTION
+    }
+});
+
+ipcRenderer.on("promptVariable", () => {
+    promptVariable().then(v => ipcRenderer.send("variableSelected", v));
 });
 
 const addTask = (data) => {
     noTasksPreview.hide();
-    const element = $(`<div class="task" id="${data.uuid}"> <div class="preview"> <img src="./images/preview_disabled.png"> </div> <div><h1 style="float: left;">Loading</h1><h1 class="cleanup" style="color: red; float: right; font-size: 15px; font-weight: 800; padding-right: 2px;">X</h1></div> </div>`).appendTo(tasksList);
+    const element = $(`<div class="task" id="${data.uuid}"> <div class="preview"> <img src="./images/preview_disabled.png"> </div> <div><h1 class="varsname" style="float: left; text-align: left;">no vars</h1><h1 class="cleanup" style="color: red; float: right; font-size: 15px; font-weight: 800; padding-right: 2px;">X</h1><h1 class="savevars" style="color: #2e2ede; float: right; font-size: 15px; font-weight: 800; padding-right: 2px; margin-right: 5px;">?</h1></div> </div>`).appendTo(tasksList);
+    
+    let hasVars = false;
+
+
+    element.find(".varsname").click(() => {
+        let obj = varsSheets.get(data.uuid);
+        if(obj) {
+            createVirtualWindow(obj.path, JSON.stringify(obj.data, null, "\t"), (json) => {
+                obj.data = json;
+                varsSheets.set(data.uuid, obj); 
+            });
+        }
+    });
+    element.find(".savevars").click(async () => {
+        if(hasVars) {
+            // find open from location
+        } else {
+            // find save location
+            const file = await dialog.showSaveDialog({
+                title: "Variable sheet",
+                defaultPath: require("path").join(__dirname, "records"),
+                buttonLabel: "Assign to Browser",
+                properties: ["createDirectory", "showOverwriteConfirmation"],
+                message: "Select where to save a new variable sheet or an existing one to assign",
+                filters: [
+                    { name: "Variable sheet", extensions: ["json"] }
+                ]
+            });
+            const filePath = file.filePath;
+            if(fs.existsSync(filePath)) {
+                const str = fs.readFileSync(filePath, "utf8");
+                const obj = JSON.parse(str);
+                console.log(obj);
+                setVars(data.uuid, filePath, obj);
+            } else {
+                const obj = {
+                    "name": "varsheet1",
+                    "vars": {
+                        "profileName": "Example"
+                    }
+                };
+                fs.writeFileSync(filePath, JSON.stringify(obj));
+                setVars(data.uuid, filePath, obj);
+            }
+        }
+    });
     element.find(".cleanup").click(() => {
         ipcRenderer.send("cleanupInstance", { uuid: data.uuid });
         element.remove();
     });
     element.find("img").css("display", "none");
     element.css("display", "block"); // css override
-    element.click((e) => {
+    element.find("img").click((e) => {
         if(readyBrowsers.includes(data.uuid)) {
             if(isRecording) {
                 dialog.showErrorBox("Error", "Error: Recording in progress, stop recording before continuing");
@@ -790,7 +1042,8 @@ const addTask = (data) => {
 
             noTasksPreview.hide();
             clearSelect();
-            previewItem = $(e.delegateTarget).attr("id");
+            if(previewItem) $(`#${previewItem} .preview`).css("box-shadow", `unset`);
+            previewItem = $(e.delegateTarget).parent(".preview").parent(".task").attr("id");
             // el("previewImage").attr("src", "./images/browser_preview.png");
             updatePreview();
             $("#queue").show();
@@ -860,7 +1113,7 @@ ipcRenderer.on("taskCreated", (e, data) => {
 
 
 ipcRenderer.on("updateTaskName", (e, data) => {
-    updateTaskName(data.uuid, data.name);
+    // updateTaskName(data.uuid, data.name);
 });
 
 ipcRenderer.on("taskDestroyed", (e, uuid) => {
@@ -869,7 +1122,7 @@ ipcRenderer.on("taskDestroyed", (e, uuid) => {
 });
 
 ipcRenderer.on("taskPaused", (e, uuid) => {
-    updateTaskName(uuid, "Starting");
+    updateTaskName(uuid, "no vars");
     $(`#${uuid} .preview img`).attr("src", "./images/preview_disabled.png");
 });
 
@@ -881,15 +1134,17 @@ ipcRenderer.on("hasPreview", async (e, data) => {
     const uuid = data.uuid;
     const base64 = data.base64;
 
+    const averageColor = await getAverageColor(base64);
+
+
     if(uuid === previewItem) {
+        $(`#${uuid} .preview`).css("box-shadow", `0px 0px 10px 0px ${averageColor.rgb}`);
         previewImage.attr("src", base64);
     }
 
-    const averageColor = await getAverageColor(base64);
 
     $(`#${uuid} .preview img`).css("display", "block");
     $(`#${uuid} .preview img`).attr("src", base64);
-    $(`#${uuid} .preview`).css("box-shadow", `0px 0px 0px 3px ${averageColor.rgb}`);
 });
 
 ipcRenderer.send("initialized");

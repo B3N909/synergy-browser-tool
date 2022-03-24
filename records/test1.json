@@ -1,0 +1,60 @@
+[
+    {
+        "type": "click",
+        "x": 0.205646013956439,
+        "y": 0.1546875,
+        "mode": "mousedown"
+    },
+    {
+        "type": "wait",
+        "ms": 200
+    },
+    {
+        "type": "click",
+        "x": 0.205646013956439,
+        "y": 0.1546875,
+        "mode": "mouseup"
+    },
+    {
+        "type": "wait",
+        "ms": 200
+    },
+    {
+        "type": "keyarray",
+        "text": "email@gmail.com"
+    },
+    {
+        "type": "click",
+        "x": 0.16166208500740115,
+        "y": 0.2625,
+        "mode": "mousedown"
+    },
+    {
+        "type": "wait",
+        "ms": 200
+    },
+    {
+        "type": "click",
+        "x": 0.16166208500740115,
+        "y": 0.2625,
+        "mode": "mouseup"
+    },
+    {
+        "type": "wait",
+        "ms": 200
+    },
+    {
+        "type": "keyarray",
+        "text": "123-231-232"
+    },
+    {
+        "type": "click",
+        "x": 0.19211249735673505,
+        "y": 0.321875,
+        "mode": "mousedown"
+    },
+    {
+        "type": "wait",
+        "ms": 200
+    }
+]

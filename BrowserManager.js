@@ -43,6 +43,7 @@ const {
 } = require('electron');
 const ipcMain = electron.ipcMain;
 
+// BROWSER-MANAGER-START
 class BrowserManager {
 
     constructor(BrowserInstance) {
@@ -56,7 +57,7 @@ class BrowserManager {
         // -> Wait for any currently happening page load to finish
 
         ipcMain.on("newTask", (e, data) => {
-            this.createBrowserInstance(data.uuid, data.url);
+            this.createBrowserInstance(data.uuid, data.url, data.emulation);
             global.browserToolWindow.webContents.send("taskCreated", { uuid: data.uuid });
         });
 
@@ -116,7 +117,7 @@ class BrowserManager {
         ipcMain.on("browserWheelChange", async (e, data) => {
             if(data.replicateInputs) {
                 for (const [key, value] of this.browsers.entries()) {
-                    await value.scroll(data.x, data.y, data.scrollX, data.scrollY);
+                    value.scroll(data.x, data.y, data.scrollX, data.scrollY);
                 }
             } else {
                 this.browsers.get(data.uuid).scroll(data.x, data.y, data.scrollX, data.scrollY);
@@ -126,10 +127,10 @@ class BrowserManager {
         ipcMain.on("browserMouseDown", async (e, data) => {
             if(data.replicateInputs) {
                 for (const [key, value] of this.browsers.entries()) {
-                    await value.click(data.x, data.y, "mousedown", data.useElements, data.rightClick);
+                    value.click(data.x, data.y, "mousedown", data.useElements, data.rightClick);
                 }
             } else {
-                this.browsers.get(data.uuid).click(data.x, data.y, "mousedown", data.useElements, data.rightClick);
+                this.browsers.get(data.uuid).click(data.x, data.y, "mousedown", data.useElements, data.rightClick, data.middleClick);
             }
         });
 
@@ -244,6 +245,16 @@ class BrowserManager {
             }
         });
 
+        ipcMain.on("spam", (e, data) => {
+            if(data.spam) {
+                console.log("Started spamming");
+                this.browsers.get(data.uuid).spam();
+            } else {
+                console.log("Stopped spamming");
+                this.browsers.get(data.uuid).stopSpam();
+            }
+        });
+
         
     }
 
@@ -256,8 +267,8 @@ class BrowserManager {
         global.browserToolWindow.webContents.send("taskCreated", { uuid: newUUID });
     }
 
-    async createBrowserInstance (uuid, siteURL, proxy) {
-        const browser = new this.BrowserInstance(uuid, siteURL, proxy);
+    async createBrowserInstance (uuid, siteURL, emulation) {
+        const browser = new this.BrowserInstance(uuid, siteURL, emulation);
 
         await browser.launch();
 
@@ -277,5 +288,6 @@ class BrowserManager {
         }
     }
 }
+// BROWSER-MANAGER-END
 
 module.exports = BrowserManager;
