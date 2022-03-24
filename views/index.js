@@ -399,6 +399,12 @@ const fastAverageColor = new FastAverageColor();
 // TODO: Dialog wrapper to auto re-open the same directory
 
 
+// TODO: FEATURE IDEAS
+// TODO: * Request library
+// TODO: * Recording of spam events / 
+// TODO: 
+
+
 // TODO: Wrapper that creates fullscreen windows for different monitors by stitching the body using css to be -x position and wider width?
 // TODO: Otherwise just a general multiscreen wrapper?
 
