@@ -1,3 +1,14 @@
+this._oldLog = console.log;
+console.log = (msg) => {
+    try {
+        if(typeof msg === "object") msg = JSON.stringify(msg);
+        if(typeof msg === "undefined") msg = "UNDEFINED";
+        this._oldLog(msg);
+    } catch (err) {
+        this._oldLog(msg);
+    }
+}
+
 const path = require('path');
 try {
     module.paths.push(path.join(process.cwd(), 'resources/app.asar/node_modules')); // FIXES AES-JS REQUIRE ISSUE
@@ -37,6 +48,8 @@ paths.map((path) => {
 
 const electron = require('electron');
 const {
+    app,
+    BrowserWindow,
     session,
     net,
     dialog
@@ -59,6 +72,21 @@ class BrowserManager {
         ipcMain.on("newTask", (e, data) => {
             this.createBrowserInstance(data.uuid, data.url, data.emulation);
             global.browserToolWindow.webContents.send("taskCreated", { uuid: data.uuid });
+        });
+
+        ipcMain.on("testFix", (e, data) => {
+            for(const [key, value] of this.browsers.entries()) {
+                console.log("Fixing");
+                value.startScreencast();
+            }
+        });
+
+        ipcMain.on("startPreview", (e, data) => {
+            this.browsers.get(data.uuid).startScreencast();
+        });
+        
+        ipcMain.on("stopPreview", (e, data) => {
+            this.browsers.get(data.uuid).stopScreencast();
         });
 
         ipcMain.on("browserForward", (e, data) => {
@@ -101,27 +129,40 @@ class BrowserManager {
             }
         });
 
-        ipcMain.on("grabPreview", (e, uuid) => {
-            if(this.browsers.has(uuid)) {
-                const browser = this.browsers.get(uuid);
-                browser.screenshot().then(base64 => {
+        ipcMain.on("testFix2", () => {
+            for(const [key, value] of this.browsers.entries()) {
+                console.log("Fixing 2");
+                value.screenshot().then(base64 => {
                     // console.log("Base64: " + base64);
                     global.browserToolWindow.webContents.send("hasPreview", {
-                        uuid,
+                        uuid: key,
                         base64: `data:image/png;base64, ${base64}`
                     });
                 })
             }
+        })
+
+        // ipcMain.on("grabPreview", (e, uuid) => {
+        //     if(this.browsers.has(uuid)) {
+        //         const browser = this.browsers.get(uuid);
+        //         browser.screenshot().then(base64 => {
+        //             // console.log("Base64: " + base64);
+        //             global.browserToolWindow.webContents.send("hasPreview", {
+        //                 uuid,
+        //                 base64: `data:image/png;base64, ${base64}`
+        //             });
+        //         })
+        //     }
+        // });
+
+        ipcMain.on("browserWheelSync", async (e, data) => {
+            for (const [key, value] of this.browsers.entries()) {
+                value.scrollSync(data.x, data.y, data.uuid);
+            }
         });
 
         ipcMain.on("browserWheelChange", async (e, data) => {
-            if(data.replicateInputs) {
-                for (const [key, value] of this.browsers.entries()) {
-                    value.scroll(data.x, data.y, data.scrollX, data.scrollY);
-                }
-            } else {
-                this.browsers.get(data.uuid).scroll(data.x, data.y, data.scrollX, data.scrollY);
-            }
+            this.browsers.get(data.uuid).scroll(data.x, data.y);
         });
 
         ipcMain.on("browserMouseDown", async (e, data) => {
@@ -145,6 +186,8 @@ class BrowserManager {
         });
 
         ipcMain.on("browserSelectChange", (e, data) => {
+            console.log("DATA ON IPCMAIN");
+            console.log(JSON.stringify(data));
             if(data.replicateInputs) {
                  for (const [key, value] of this.browsers.entries()) {
                     value.select(data.selector, data.value);
@@ -191,32 +234,35 @@ class BrowserManager {
         });
 
         ipcMain.on("startPlayback", async (e, data) => {
-            const file = await dialog.showOpenDialog({
-                title: "Recording JSON to Play",
-                defaultPath: require("path").join(__dirname, "records"),
-                buttonLabel: "Play",
-                properties: ["openFile"],
-                message: "Select the Recording JSON to Playback",
-                filters: [
-                    { name: "Playback Recording", extensions: ["json"] }
-                ]
-            });
-            if(file) {
-                if(!file.canceled) {
-                    if(file.filePaths && file.filePaths.length == 1) {
-                        const filePath = file.filePaths[0];
-
-                        if(data.replicateInputs) {
-                            let promises = [];
-                            for (const [key, value] of this.browsers.entries()) {
-                                promises.push(value.playback(filePath));
-                            }
-                            Promise.all(promises).then(() => global.browserToolWindow.webContents.send("playbackComplete"));
-                        } else {
-                            this.browsers.get(data.uuid).playback(filePath).then(() => global.browserToolWindow.webContents.send("playbackComplete"));
+            let path = data.path;
+            if(!path) {
+                const file = await dialog.showOpenDialog({
+                    title: "Recording JSON to Play",
+                    defaultPath: require("path").join(__dirname, "records"),
+                    buttonLabel: "Play",
+                    properties: ["openFile"],
+                    message: "Select the Recording JSON to Playback",
+                    filters: [
+                        { name: "Playback Recording", extensions: ["json"] }
+                    ]
+                });
+                if(file) {
+                    if(!file.canceled) {
+                        if(file.filePaths && file.filePaths.length == 1) {
+                            const filePath = file.filePaths[0];
+                            path = filePath;
                         }
-                    } 
+                    }
                 }
+            }
+            if(data.replicateInputs) {
+                let promises = [];
+                for (const [key, value] of this.browsers.entries()) {
+                    promises.push(value.playback(path));
+                }
+                Promise.all(promises).then(() => global.browserToolWindow.webContents.send("playbackComplete"));
+            } else {
+                this.browsers.get(data.uuid).playback(path).then(() => global.browserToolWindow.webContents.send("playbackComplete"));
             }
         });
 

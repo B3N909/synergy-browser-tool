@@ -352,7 +352,7 @@ class PageWrapper {
             
                 const getPath = (element) => {
                     // False on non-elements
-                    if(!(element instanceof HTMLElement)) {
+                    if(!(element instanceof Element)) {
                         return false;
                     }
                 

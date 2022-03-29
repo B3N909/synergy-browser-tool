@@ -383,8 +383,15 @@ const fastAverageColor = new FastAverageColor();
 // TODO: * Abstracted terminology inside the recording JSON file to make complex tasks easy and readable
 
 
+// TODO: DO BEFORE NEXT RELEASE: 3/27/2020
+// TODO: decide to ship with either electron or puppeteer? if electron fix random freezes
+// TODO: Speed up interactions, last step
+// TODO: Bug test
+// TODO: RELEASE BUILD
 
 
+// TODO: Better cleanup
+// TODO: MAKE ANY SELECT EXPAND WHEN HOVERING, ALLOW MULTIPLE SELECTS TO BE SHOWN
 // TODO: BEFORE BETA RELEASE
 // TODO: Fix keyarray & keyelementarray
 // TODO:
@@ -392,13 +399,8 @@ const fastAverageColor = new FastAverageColor();
 // TODO: -> Change Select so that on recording, it skips the last click event and swaps for select event
 // TODO: -> Change Select so that it works with clickElement
 // TODO: -> Tab on keyarray & keyelementarray
-
-
 // TODO: GOOD IDEA! ELECTRON IPC COMMUNICATION WRAPPER FOR 2 WAY MESSAGES, OR MULTI WAY MESSAGES
-
 // TODO: Dialog wrapper to auto re-open the same directory
-
-
 // TODO: FEATURE IDEAS
 // TODO: * Request library
 // TODO: * Recording of spam events / 
@@ -415,19 +417,21 @@ const fastAverageColor = new FastAverageColor();
 
 
 // TODO: TOMORROW 3/24/2020
-// TODO: !!! BIG PROBLEM !!! this._recentClick this is undefined in _click when retrying !!! BIG PROBLEM !!!
-// TODO: Select crashes, does not work
-// TODO: Only accept mouse down if cursor is over preview img
 // TODO: Test with a lot of browsers
 // TODO: Lots of testing
 // TODO: Get build out!
+
+
+
+// TODO: removed feature - !!! BIG PROBLEM !!! this._recentClick this is undefined in _click when retrying !!! BIG PROBLEM !!!
 
 
 // TODO: DONE! async events inside BrowserManage ipcMain.on
 // TODO: DONE! Border glow around selected browser
 // TODO: DONE! Queue text is not right align correctly
 // TODO: DONE! if waitFor is too long, refresh page + retry
-
+// TODO: DONE! Select crashes, does not work
+// TODO: DONE! Only accept mouse down if cursor is over preview img
 
 // TODO: * ADDRESS THE FACT THAT ON DROPS ITS NOT GOING TO BE AS SIMPLE AS USING A QUEUE SYSTEM, ADD TO CART WILL BE AN ISSUE, MAYBE ADD RETRY AFTER X BUILT IN?
 // TODO: * BUG TEST.
@@ -581,7 +585,7 @@ const popupType = (middleClick) => {
         e.fadeOut(125, () => e.remove());
     });
 }
-
+let isMouseEnter = false;
 let isSpamming = false;
 let isRecording = false;
 let isPlayback = false;
@@ -614,7 +618,7 @@ playbackButton.click(() => {
         playbackButton.css("opacity", "0.2");
         ipcRenderer.send("startPlayback", {
             uuid: previewItem,
-            replicateInputs
+            replicateInputs,
         });
     }
     if(isPlayback) {
@@ -716,12 +720,31 @@ newTask.click(async () => {
             selectOptions: ["iPhone", "None"]
         });
 
-        if(emulation) {
-            ipcRenderer.send("newTask", {
-                uuid: (Math.round(Math.random() * 1000000)).toString(),
-                url,
-                emulation
-            });
+        window.emulation = emulation;
+        if(emulation === "0") emulation = "iphone";
+        if(emulation === "1") emulation = "none";
+
+        console.log("Emulation: " + emulation);
+
+        let amount = parseFloat(await prompt({
+            title: "Amount",
+            label: "Amount of Browsers",
+            value: "1",
+            inputAttrs: {
+                type: "number",
+            },
+            type: "input"
+        }));
+
+
+        if(emulation && amount && amount > 0) {
+            for(let i = 0; i < amount; i++) {
+                ipcRenderer.send("newTask", {
+                    uuid: (Math.round(Math.random() * 1000000)).toString(),
+                    url,
+                    emulation
+                });
+            }
         }
     }
 });
@@ -836,6 +859,7 @@ let mouseCursorTick = -1;
 let lastMouseX, lastMouseY;
 
 previewImage[0].addEventListener("mouseenter", (e) => {
+    isMouseEnter = true;
     if(isEditing !== 0) return;
     if(isPromptingVariable) return;
     if(mouseCursorTick !== -1) clearInterval(mouseCursorTick);
@@ -849,6 +873,7 @@ previewImage[0].addEventListener("mouseenter", (e) => {
 });
 
 previewImage[0].addEventListener("mouseleave", (e) => {
+    isMouseEnter = false;
     if(mouseCursorTick !== -1) clearInterval(mouseCursorTick);
     $("html").css("cursor", "");
 });
@@ -867,6 +892,7 @@ previewImage[0].addEventListener("mousemove", (e) => {
 });
 
 previewImage[0].addEventListener("mousedown", (e) => {
+    if(!isMouseEnter) return;
     if(isEditing !== 0) return;
     if(isPromptingVariable) return;
     $(".popupType").remove();
@@ -891,6 +917,7 @@ previewImage[0].addEventListener("mousedown", (e) => {
 }, true);
 
 previewImage[0].addEventListener("mouseup", (e) => {
+    if(!isMouseEnter) return;
     if(isEditing !== 0) return;
     if(isPromptingVariable) return;
     if(!previewItem) return;
@@ -908,23 +935,45 @@ previewImage[0].addEventListener("mouseup", (e) => {
     // console.log(`X: ${x} , Y: ${y}`);
 }, true);
 
+let scrollTimeout = -1;
+let scrollYChange = 0;
+
 previewImage[0].addEventListener("wheel", (e) => {
+    if(!isMouseEnter) return;
     if(isEditing !== 0) return;
     if(isPromptingVariable) return;
     if(!previewItem) return;
     clearSelect();
+
     ipcRenderer.send("browserWheelChange", {
         uuid: previewItem,
         x: e.deltaX,
         y: e.deltaY,
-        scrollX: window.scrollX,
-        scrollY: window.scrollY,
         replicateInputs
-    });
+    })
+
+    if(scrollTimeout !== -1) {
+        clearTimeout(scrollTimeout);
+        scrollYChange = scrollYChange + e.deltaY;
+    } else {
+        scrollYChange = e.deltaY;
+    }
+
+    scrollTimeout = setTimeout(() => {
+        if(!replicateInputs) return;
+        ipcRenderer.send("browserWheelSync", {
+            uuid: previewItem,
+            x: e.deltaX,
+            y: scrollYChange,
+            replicateInputs
+        });
+        scrollTimeout = -1;
+    }, 500);
     // console.log(`X: ${x} , Y: ${y}`);
 }, true);
 
 window.addEventListener("keydown", (e) => {
+    if(!isMouseEnter) return;
     if(isEditing !== 0) return;
     if(isPromptingVariable) return;
     if(!previewItem) return;
@@ -937,6 +986,7 @@ window.addEventListener("keydown", (e) => {
 }, true);
 
 window.addEventListener("keyup", (e) => {
+    if(!isMouseEnter) return;
     if(isEditing !== 0) return;
     if(isPromptingVariable) return;
     if(!previewItem) return;
@@ -979,9 +1029,48 @@ ipcRenderer.on("promptVariable", () => {
     promptVariable().then(v => ipcRenderer.send("variableSelected", v));
 });
 
+const changePreview = (uuid) => {
+    // if(uuid === false) {
+    //     noTasksPreview.show();
+    //     clearSelect();
+    //     if(previewItem) {
+    //         ipcRenderer.send("stopPreview", {
+    //             uuid: previewItem
+    //         });
+    //     }
+    //     $("#queue").hide();
+    //     previewElement.css("display", "none");
+    //     previewItem = false;
+    //     return;
+    // }
+    noTasksPreview.hide();
+    clearSelect();
+    if(previewItem) {
+        // if(previewItem !== uuid) {
+        //     console.log("Stopping preview of: " + previewItem);
+        //     ipcRenderer.send("stopPreview", {
+        //         uuid: previewItem
+        //     });
+        // }
+        $(`#${previewItem} .preview`).css("box-shadow", `unset`);
+    }
+    // if(previewItem !== uuid) {
+    //     console.log("Starting preview of: " + uuid);
+    //     ipcRenderer.send("startPreview", {
+    //         uuid
+    //     });
+    // }
+    previewItem = uuid;
+    // el("previewImage").attr("src", "./images/browser_preview.png");
+    updatePreview();
+    $("#queue").show();
+    previewElement.css("display", "flex");
+    console.log("Selected to preview task: " + previewItem);
+}
+
 const addTask = (data) => {
     noTasksPreview.hide();
-    const element = $(`<div class="task" id="${data.uuid}"> <div class="preview"> <img src="./images/preview_disabled.png"> </div> <div><h1 class="varsname" style="float: left; text-align: left;">no vars</h1><h1 class="cleanup" style="color: red; float: right; font-size: 15px; font-weight: 800; padding-right: 2px;">X</h1><h1 class="savevars" style="color: #2e2ede; float: right; font-size: 15px; font-weight: 800; padding-right: 2px; margin-right: 5px;">?</h1></div> </div>`).appendTo(tasksList);
+    const element = $(`<div class="task" id="${data.uuid}"> <div class="preview"> <img src="./images/preview_disabled.png"> </div> <div style="padding-bottom: 30px;"><h1 class="varsname" style="float: left; text-align: left;">no vars</h1><h1 class="cleanup" style="color: red; float: right; font-size: 15px; font-weight: 800; padding-right: 2px;">X</h1><h1 class="savevars" style="color: #2e2ede; float: right; font-size: 15px; font-weight: 800; padding-right: 2px; margin-right: 5px;">?</h1></div> </div>`).appendTo(tasksList);
     
     let hasVars = false;
 
@@ -1030,6 +1119,9 @@ const addTask = (data) => {
     });
     element.find(".cleanup").click(() => {
         ipcRenderer.send("cleanupInstance", { uuid: data.uuid });
+        if(previewItem === data.uuid) {
+            changePreview(false);
+        }
         element.remove();
     });
     element.find("img").css("display", "none");
@@ -1045,16 +1137,9 @@ const addTask = (data) => {
                 return;
             }
 
+            let uuid = $(e.delegateTarget).parent(".preview").parent(".task").attr("id");
 
-            noTasksPreview.hide();
-            clearSelect();
-            if(previewItem) $(`#${previewItem} .preview`).css("box-shadow", `unset`);
-            previewItem = $(e.delegateTarget).parent(".preview").parent(".task").attr("id");
-            // el("previewImage").attr("src", "./images/browser_preview.png");
-            updatePreview();
-            $("#queue").show();
-            previewElement.css("display", "flex");
-            console.log("Selected to preview task: " + previewItem);
+            changePreview(uuid);
         }
     });
 }
@@ -1097,10 +1182,13 @@ ipcRenderer.on("spawnSelect", (e, data) => {
             optionsString = optionsString + `<option value="${option.value}">${option.text}</option>`
         }
 
-        const selectPopup = $(`<select style="border: 1px solid black; border-radius: 10px; pointer-events: all; z-index: 500; position: absolute; left: ${left + preview.left}px; top: ${top + preview.top}px; width: ${rect.width}px; height: ${rect.height}px;">${optionsString}</select>`);
+        let width = (rect.width / data.pageWidth) * preview.width;
+        let height = ((rect.height / data.pageHeight) * preview.height) * options.length;
+        const selectPopup = $(`<select id="selectPopup" style="overflow: hidden; border: 1px solid #7d7d7d; border-radius: 2px; pointer-events: all; z-index: 500; position: absolute; left: ${left + preview.left}px; top: ${top + preview.top}px; width: ${width}px; height: ${height}px; font-size: 80%; font-weight: 600;">${optionsString}</select>`);
         selectPopup.appendTo($("body"));
+        selectPopup[0].size = options.length;
         selectPopup.change((e) => {
-            const value = selectPopup.attr("value");
+            const value = selectPopup.val();
             ipcRenderer.send("browserSelectChange", {
                 value,
                 selector: data.selector,
@@ -1154,5 +1242,28 @@ ipcRenderer.on("hasPreview", async (e, data) => {
 });
 
 ipcRenderer.send("initialized");
+
+const devTask = () => {
+    let uuid = (Math.round(Math.random() * 1000000)).toString();
+    ipcRenderer.send("newTask", {
+        uuid,
+        url: "https://www.supremenewyork.com",
+        emulation: "None",
+    });
+    // once page is ready
+    
+    ipcRenderer.once("browserReady", (e, data) => {
+        console.log("Swapping PREVIEWS");
+        changePreview(uuid);
+
+        ipcRenderer.send("startPlayback", {
+            uuid,
+            replicateInputs: false,
+            path: "./records/supremeDesktopHanes.json"
+        });
+    });
+}
+
+// devTask();
 
 //#endregion

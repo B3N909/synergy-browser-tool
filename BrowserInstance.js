@@ -1,4 +1,7 @@
-const { ipcRenderer, ipcMain } = require('electron');
+let BrowserWindow;
+let ipcMain;
+let session;
+
 const path = require('path');
 const { isBuffer } = require('util');
 const { runInThisContext } = require('vm');
@@ -42,15 +45,16 @@ paths.map((path) => {
 // PAGE-WRAPPER-START
 class PageWrapper {
 
-    constructor(page) {
+    constructor(page, session) {
         this.page = page;
+        this.session = session;
     }
 
     async newDocument (emulation) {
-        if(emulation !== "iPhone") return;
-        return await this.page.evaluateOnNewDocument(() => {
+        if(emulation !== "iphone") return;
+        const test = () => {
             const data = JSON.parse("{\"webgl\":{\"2849\":1,\"2885\":1029,\"2886\":2305,\"2928\":{\"0\":0,\"1\":1},\"2930\":true,\"2931\":1,\"2932\":513,\"2962\":519,\"2963\":2147483647,\"2964\":7680,\"2965\":7680,\"2966\":7680,\"2968\":2147483647,\"2978\":{\"0\":0,\"1\":0,\"2\":300,\"3\":150},\"3024\":true,\"3088\":{\"0\":0,\"1\":0,\"2\":300,\"3\":150},\"3106\":{\"0\":0,\"1\":0,\"2\":0,\"3\":0},\"3107\":[true,true,true,true],\"3317\":4,\"3333\":4,\"3379\":16384,\"3386\":{\"0\":16384,\"1\":16384},\"3408\":4,\"3410\":8,\"3411\":8,\"3412\":8,\"3413\":8,\"3414\":24,\"7936\":\"WebKit\",\"7937\":\"WebKit WebGL\",\"7938\":\"WebGL 1.0\",\"32773\":{\"0\":0,\"1\":0,\"2\":0,\"3\":0},\"32777\":32774,\"32936\":1,\"32937\":4,\"32938\":1,\"32969\":1,\"32971\":1,\"33170\":4352,\"33901\":{\"0\":1,\"1\":511},\"33902\":{\"0\":1,\"1\":16},\"34016\":33984,\"34024\":16384,\"34076\":16384,\"34467\":{},\"34816\":519,\"34817\":7680,\"34818\":7680,\"34819\":7680,\"34877\":32774,\"34921\":16,\"34930\":16,\"35660\":16,\"35661\":32,\"35724\":\"WebGL GLSL ES 1.0 (1.0)\",\"35738\":5121,\"35739\":6408,\"36004\":2147483647,\"36005\":2147483647,\"36347\":512,\"36348\":15,\"36349\":224,\"37443\":37444,\"37445\":\"Apple Inc.\",\"37446\":\"Apple GPU\"},\"navigator\":{\"cookieEnabled\":true,\"maxTouchPoints\":5,\"appCodeName\":\"Mozilla\",\"appName\":\"Netscape\",\"appVersion\":\"5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.1 Mobile/15E148 Safari/604.1\",\"platform\":\"iPhone\",\"product\":\"Gecko\",\"productSub\":\"20030107\",\"userAgent\":\"Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.1 Mobile/15E148 Safari/604.1\",\"vendor\":\"Apple Computer, Inc.\",\"vendorSub\":\"null\",\"language\":\"en-us\",\"onLine\":true},\"navigatorFunctions\":{\"getStorageUpdates\":\"navigator.getStorageUpdates\",\"sendBeacon\":\"navigator.sendBeacon\",\"requestMediaKeySystemAccess\":\"navigator.requestMediaKeySystemAccess\",\"getGamepads\":\"navigator.getGamepads\",\"javaEnabled\":\"navigator.javaEnabled\"},\"navigatorObjects\":{\"geolocation\":{\"name\":\"Geolocation\"},\"mediaCapabilities\":{\"name\":\"MediaCapabilities\"},\"languages\":{\"length\":1,\"name\":\"Array\"},\"plugins\":{\"length\":0,\"name\":\"PluginArray\"},\"mimeTypes\":{\"length\":0,\"name\":\"MimeTypeArray\"}},\"window\":{\"innerHeight\":1702,\"innerWidth\":980,\"outerHeight\":896,\"outerWidth\":414,\"screenX\":0,\"screenLeft\":0,\"screenY\":0,\"screenTop\":0},\"windowObjects\":{\"screen\":{\"height\":896,\"width\":414,\"colorDepth\":32,\"pixelDepth\":32,\"availLeft\":0,\"availTop\":0,\"availHeight\":896,\"availWidth\":414,\"name\":\"Screen\"},\"visualViewport\":{\"offsetLeft\":0,\"offsetTop\":0,\"pageLeft\":0,\"pageTop\":0,\"width\":980,\"height\":1702,\"scale\":0.422448992729187,\"onresize\":null,\"onscroll\":null,\"name\":\"VisualViewport\"}}}");
-
+        
             function overwrite (arr, name) {
                 const properties = Object.keys(arr);
                 for(let i = 0; i < properties.length; i++) {
@@ -64,18 +68,18 @@ class PageWrapper {
             }
             overwrite(data.navigator, navigator);
             overwrite(data.window, window);
-
+        
             // Properties
             delete Object.getPrototypeOf(navigator).doNotTrack;
             delete Object.getPrototypeOf(navigator).hardwareConcurrency;
             delete Object.getPrototypeOf(navigator).deviceMemory;
             delete Object.getPrototypeOf(navigator).userAgentData;
-
+        
             Object.defineProperty(navigator, "standalone", {
                 value: false,
                 writable: false
             });
-
+        
             // Functions
             delete Object.getPrototypeOf(navigator).userActivation;
             delete Object.getPrototypeOf(navigator).connection;
@@ -96,14 +100,77 @@ class PageWrapper {
             delete Object.getPrototypeOf(navigator).presentation;
             delete Object.getPrototypeOf(navigator).bluetooth;
             window.chrome = undefined;
-
+        
             const hook = HTMLMediaElement.prototype.canPlayType;
-
+        
             HTMLMediaElement.prototype.canPlayType = function() {
                 if (arguments[0].includes('mp5a')) return '';
                 return hook.apply(this, arguments);
             }
-        });
+        }
+
+        await this.session.send("Page.addScriptToEvaluateOnNewDocument", {
+            source: "(" + test.toString() + ")()",
+            includeCommandLineAPI: true
+        })
+        // return await this.page.evaluateOnNewDocument(() => {
+        //     console.log("STARTED!");
+
+        //     const data = JSON.parse("{\"webgl\":{\"2849\":1,\"2885\":1029,\"2886\":2305,\"2928\":{\"0\":0,\"1\":1},\"2930\":true,\"2931\":1,\"2932\":513,\"2962\":519,\"2963\":2147483647,\"2964\":7680,\"2965\":7680,\"2966\":7680,\"2968\":2147483647,\"2978\":{\"0\":0,\"1\":0,\"2\":300,\"3\":150},\"3024\":true,\"3088\":{\"0\":0,\"1\":0,\"2\":300,\"3\":150},\"3106\":{\"0\":0,\"1\":0,\"2\":0,\"3\":0},\"3107\":[true,true,true,true],\"3317\":4,\"3333\":4,\"3379\":16384,\"3386\":{\"0\":16384,\"1\":16384},\"3408\":4,\"3410\":8,\"3411\":8,\"3412\":8,\"3413\":8,\"3414\":24,\"7936\":\"WebKit\",\"7937\":\"WebKit WebGL\",\"7938\":\"WebGL 1.0\",\"32773\":{\"0\":0,\"1\":0,\"2\":0,\"3\":0},\"32777\":32774,\"32936\":1,\"32937\":4,\"32938\":1,\"32969\":1,\"32971\":1,\"33170\":4352,\"33901\":{\"0\":1,\"1\":511},\"33902\":{\"0\":1,\"1\":16},\"34016\":33984,\"34024\":16384,\"34076\":16384,\"34467\":{},\"34816\":519,\"34817\":7680,\"34818\":7680,\"34819\":7680,\"34877\":32774,\"34921\":16,\"34930\":16,\"35660\":16,\"35661\":32,\"35724\":\"WebGL GLSL ES 1.0 (1.0)\",\"35738\":5121,\"35739\":6408,\"36004\":2147483647,\"36005\":2147483647,\"36347\":512,\"36348\":15,\"36349\":224,\"37443\":37444,\"37445\":\"Apple Inc.\",\"37446\":\"Apple GPU\"},\"navigator\":{\"cookieEnabled\":true,\"maxTouchPoints\":5,\"appCodeName\":\"Mozilla\",\"appName\":\"Netscape\",\"appVersion\":\"5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.1 Mobile/15E148 Safari/604.1\",\"platform\":\"iPhone\",\"product\":\"Gecko\",\"productSub\":\"20030107\",\"userAgent\":\"Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.1 Mobile/15E148 Safari/604.1\",\"vendor\":\"Apple Computer, Inc.\",\"vendorSub\":\"null\",\"language\":\"en-us\",\"onLine\":true},\"navigatorFunctions\":{\"getStorageUpdates\":\"navigator.getStorageUpdates\",\"sendBeacon\":\"navigator.sendBeacon\",\"requestMediaKeySystemAccess\":\"navigator.requestMediaKeySystemAccess\",\"getGamepads\":\"navigator.getGamepads\",\"javaEnabled\":\"navigator.javaEnabled\"},\"navigatorObjects\":{\"geolocation\":{\"name\":\"Geolocation\"},\"mediaCapabilities\":{\"name\":\"MediaCapabilities\"},\"languages\":{\"length\":1,\"name\":\"Array\"},\"plugins\":{\"length\":0,\"name\":\"PluginArray\"},\"mimeTypes\":{\"length\":0,\"name\":\"MimeTypeArray\"}},\"window\":{\"innerHeight\":1702,\"innerWidth\":980,\"outerHeight\":896,\"outerWidth\":414,\"screenX\":0,\"screenLeft\":0,\"screenY\":0,\"screenTop\":0},\"windowObjects\":{\"screen\":{\"height\":896,\"width\":414,\"colorDepth\":32,\"pixelDepth\":32,\"availLeft\":0,\"availTop\":0,\"availHeight\":896,\"availWidth\":414,\"name\":\"Screen\"},\"visualViewport\":{\"offsetLeft\":0,\"offsetTop\":0,\"pageLeft\":0,\"pageTop\":0,\"width\":980,\"height\":1702,\"scale\":0.422448992729187,\"onresize\":null,\"onscroll\":null,\"name\":\"VisualViewport\"}}}");
+
+        //     function overwrite (arr, name) {
+        //         const properties = Object.keys(arr);
+        //         for(let i = 0; i < properties.length; i++) {
+        //             const property = properties[i];
+        //             const value = arr[property];
+        //             Object.defineProperty(name, property, {
+        //                 value,
+        //                 writable: false
+        //             });
+        //         }
+        //     }
+        //     overwrite(data.navigator, navigator);
+        //     overwrite(data.window, window);
+
+        //     // Properties
+        //     delete Object.getPrototypeOf(navigator).doNotTrack;
+        //     delete Object.getPrototypeOf(navigator).hardwareConcurrency;
+        //     delete Object.getPrototypeOf(navigator).deviceMemory;
+        //     delete Object.getPrototypeOf(navigator).userAgentData;
+
+        //     Object.defineProperty(navigator, "standalone", {
+        //         value: false,
+        //         writable: false
+        //     });
+
+        //     // Functions
+        //     delete Object.getPrototypeOf(navigator).userActivation;
+        //     delete Object.getPrototypeOf(navigator).connection;
+        //     delete Object.getPrototypeOf(navigator).webkitTemporaryStorage;
+        //     delete Object.getPrototypeOf(navigator).webkitPersistentStorage;
+        //     delete Object.getPrototypeOf(navigator).xr;
+        //     delete Object.getPrototypeOf(navigator).permissions;
+        //     delete Object.getPrototypeOf(navigator).locks;
+        //     delete Object.getPrototypeOf(navigator).wakeLock;
+        //     delete Object.getPrototypeOf(navigator).usb;
+        //     delete Object.getPrototypeOf(navigator).mediaSession;
+        //     delete Object.getPrototypeOf(navigator).clipboard;
+        //     delete Object.getPrototypeOf(navigator).credentials;
+        //     delete Object.getPrototypeOf(navigator).keyboard;
+        //     delete Object.getPrototypeOf(navigator).mediaDevices;
+        //     delete Object.getPrototypeOf(navigator).storage;
+        //     delete Object.getPrototypeOf(navigator).serviceWorker;
+        //     delete Object.getPrototypeOf(navigator).presentation;
+        //     delete Object.getPrototypeOf(navigator).bluetooth;
+        //     window.chrome = undefined;
+
+        //     const hook = HTMLMediaElement.prototype.canPlayType;
+
+        //     HTMLMediaElement.prototype.canPlayType = function() {
+        //         if (arguments[0].includes('mp5a')) return '';
+        //         return hook.apply(this, arguments);
+        //     }
+        // });
     }
 
     async title () {
@@ -401,7 +468,7 @@ class PageWrapper {
             
                 const getPath = (element) => {
                     // False on non-elements
-                    if(!(element instanceof HTMLElement)) {
+                    if(!(element instanceof Element)) {
                         return false;
                     }
                 
@@ -449,9 +516,16 @@ class PageWrapper {
                  return "path:" + getPath(lastElement);
             }
 
-            const uniquePath = () => {
-                const element = document.elementFromPoint(x, y);
-                return getPath(element);
+            const element = document.elementFromPoint(x, y);
+
+            let k = 0;
+            const uniquePath = (e) => {
+                let path = getPath(e);
+                if(k < 4 && !path) {
+                    k++;
+                    return uniquePath(e.parentElement);
+                }
+                return path;
             }
 
 
@@ -460,11 +534,10 @@ class PageWrapper {
                 // Use normal full path
 
                 // return unique full path
-                return `path:${uniquePath()}`;
+                return `path:${uniquePath(element)}`;
 
             } else if(type === "Text") {
                 // Use element's text as our selector
-                const element = document.elementFromPoint(x, y);
                 if(variableName) {
                     return `text:var?${variableName}`;
                 }
@@ -473,8 +546,6 @@ class PageWrapper {
                 return `text:'${text}'`;
             } else if(type === "Keywords") {
                 // Use element's text as a keywords selector
-                
-                const element = document.elementFromPoint(x, y);
                 const text = element.textContent;
 
                 return `keywords:+'${text}'`;
@@ -499,26 +570,93 @@ class PageWrapper {
         return v;
     }
 
-    async getSelect (x, y) {
-        return await this.page.evaluate((data) => {
-            function getUniqueSelector(node) {
-                let selector = "";
-                while (node.parentElement) {
-                    const siblings = Array.from(node.parentElement.children).filter(
-                        e => e.tagName === node.tagName
-                    );
-                    selector =
-                        (siblings.indexOf(node)
-                            ? `${node.tagName}:nth-of-type(${siblings.indexOf(node) + 1})`
-                            : `${node.tagName}`) + `${selector ? " > " : ""}${selector}`;
-                    node = node.parentElement;
-                }
-                return `html > ${selector.toLowerCase()}`;
+    async getSelect (elementHandle) {
+        return await this.page.evaluate((element) => {
+            
+            /**
+             * Get a unique CSS selector for a given DOM node
+             * @param {HTMLElement} element - DOM node
+             * @return {string} Unique CSS selector for the given DOM node
+             */
+             function getPath (element) {
+                            /**
+                            * Gets the element node that is a sibling to this element node (a direct child of the same parent) and is immediately
+                            * previous to it in the DOM tree. It's a fix for IE that does not support :nth-child pseudoselector
+                            * @param {HTMLElement} element - DOM node
+                            * @return {string} Unique CSS selector for the given DOM node
+                            */
+                            const previousElementSiblingPolyfill = (element) =>{
+                                element = element.previousSibling;
+                                // Loop through ignoring anything not an element
+                                while(element !== null) {
+                                    if(element.nodeType === Node.ELEMENT_NODE) {
+                                        return element;
+                                    } else {
+                                        element = element.previousSibling;
+                                    }
+                                }
+                            }
+                        
+                        
+                            /**
+                             * Gets the element node that is a sibling to this element node (a direct child of the same parent) and is immediately
+                             * previous to it in the DOM tree. It's a fix for IE that does not support :nth-child pseudoselector
+                             * @param {HTMLElement} element - DOM node
+                             * @return {string} Unique CSS selector for the given DOM node
+                             */
+                            const previousElementSibling = (element) =>{
+                                if(element.previousElementSibling !== 'undefined') {
+                                    return element.previousElementSibling
+                                } else {
+                                    return previousElementSiblingPolyfill(element);
+                                }
+                            }
+                        
+                            const getPath = (element) => {
+                                // False on non-elements
+                                if(!(element instanceof Element)) {
+                                    return false;
+                                }
+                            
+                                const path = [];
+                                // If element is null it's the end of partial. It's a loose element which has, sofar, not been attached to a parent in the node tree.
+                                while(element !== null && element.nodeType === Node.ELEMENT_NODE) {
+                                    let selector = element.nodeName;
+                            
+                                    if (element.id) {
+                                        selector += `#${element.id}`;
+                                    } else {
+                                        // Walk backwards until there is no previous sibling
+                                        let sibling = element;
+                            
+                                        // Will hold nodeName to join for adjacent selection
+                                        let siblingSelectors = [];
+                            
+                                        while(sibling !== null && sibling.nodeType === Node.ELEMENT_NODE) {
+                                            siblingSelectors.unshift(sibling.nodeName);
+                                            sibling = previousElementSibling(sibling);
+                                        }
+                            
+                                        // :first-child does not apply to HTML
+                                        if(siblingSelectors[0] !== 'HTML') {
+                                            siblingSelectors[0] = siblingSelectors[0] + ':first-child';
+                                        }
+                            
+                                        selector = siblingSelectors.join(' + ');
+                                    }
+                                    path.unshift(selector);
+                                    element = element.parentNode;
+                                }
+                                return path.join(' > ');
+                            }
+            
+                            return getPath(element);
             }
-
-
-            const element = document.elementFromPoint(data[0], data[1]);
+            
+            
             if(element.nodeName === "SELECT") {
+
+
                 const options = element.options;
 
                 let formattedOptions = [];
@@ -533,25 +671,35 @@ class PageWrapper {
                 return {
                     options: formattedOptions,
                     rect: JSON.parse(JSON.stringify(element.getBoundingClientRect())),
-                    selector: getUniqueSelector(element)
+                    selector: getPath(element)
                 };
             }
             return false;
-        }, [x, y]);
+        }, elementHandle);
     }
 
     async scroll (x, y) {
-        return await this.page.evaluate(() => {
-            window.scrollTo(scrollX, scrollY);
-        });
+        return await this.page.evaluate((a) => {
+            window.scrollTo(a[0], a[1]);
+        }, [x, y]);
+    }
+
+    async scrollBy (x, y) {
+        return await this.page.evaluate((a) => {
+            window.scrollBy(a[0], a[1]);
+        }, [x, y]);
     }
 }
 // PAGE-WRAPPER-END
 
 
+let browser = false;
+let mainPage = false;
+
 // BROWSER-INSTANCE-START
 class BrowserInstance {
     constructor(uuid, targetURL, emulation) {
+        if(emulation) emulation = emulation.toLowerCase();
         this.ready = false;
         this.disableNextMouseUp = false;
         this.emulation = emulation;
@@ -563,7 +711,7 @@ class BrowserInstance {
         const stealth = require("puppeteer-extra-plugin-stealth")();
         // const UserAgentOverride = require('puppeteer-extra-plugin-stealth/evasions/user-agent-override')
         
-        if(emulation === "iPhone") {
+        if(emulation === "iphone") {
             stealth.enabledEvasions.delete('chrome.app');
             stealth.enabledEvasions.delete('chrome.csi');
             stealth.enabledEvasions.delete('chrome.loadTimes');
@@ -577,7 +725,7 @@ class BrowserInstance {
             stealth.enabledEvasions.delete('user-agent-override');
             stealth.enabledEvasions.delete('webgl.vendor');
             this.userAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.1 Mobile/15E148 Safari/604.1";
-        } else if(emulation === "None") {
+        } else if(emulation === "none") {
             this.userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.74 Safari/537.36";
         }
         this.pup = require("puppeteer-extra").use(stealth);
@@ -588,37 +736,18 @@ class BrowserInstance {
         this.queueReady = true;
 
         this.colors = require("colors");
-        this._oldLog = console.log;
-        console.log = (msg) => {
-            try {
-                if(typeof msg === "object") msg = JSON.stringify(msg);
-                if(typeof msg === "undefined") msg = "UNDEFINED";
-                this._oldLog(`[${this.taskID}]`.cyan + " " + msg);
-            } catch (err) {
-                this._oldLog(`[${this.taskID}]`.cyan + " " + msg);
-            }
-        }
-
-        setInterval(() => {
-            if(this.queue) {
-                global.browserToolWindow.webContents.send("queueUpdate", {
-                    uuid: this.taskID.toString(),
-                    queue: this.queue.length
-                });
-            }
-        }, 50);
 
         process.on("uncaughtException", (err) => {
             this.handleError();
             console.log("FATAL ERROR: ".bgRed);
-            console.log(err);
-            throw err;
+            console.error(err);
+            // throw err;
         });
         process.on("unhandledRejection", (err) => {
             this.handleError();
             console.log("FATAL ERROR: ".bgRed);
-            console.log(err);
-            throw err;
+            console.error(err);
+            // throw err;
         });
         
     }
@@ -674,15 +803,108 @@ class BrowserInstance {
 
         if(this.proxy) options.args.push('--proxy-server=' + this.proxy.address + ":" + this.proxy.port);
 
+        this.width = 375;
+        this.height = 812;
+
+        if(this.emulation !== "iphone") {
+            this.width = 900;
+            this.height = 800;
+        }
+
+
+        let useElectron = false;
+        if(useElectron) {
+            const window = new BrowserWindow({
+                // width: this.width,
+                // height: this.height,
+                title: "INSTANCE:" + this.taskID,
+                width: this.width,
+                height: this.height,
+                frame: false,
+                show: false,
+                webPreferences: {
+                    enableRemoteModule: false,
+                    nodeIntegration: false,
+                    session: session.fromPartition(this.taskID.toString()),
+                },
+            });
+            // window.openDevTools();
+            await window.loadURL("http://www.google.com/" + this.taskID);
+            // setTimeout(() => {
+            //     global.browserToolWindow.setSize(1200, 800);
+            // }, 500);
+
+            
+            if(!browser) {
+                const request = require("request");
+                let versions = await new Promise(r => {
+                    request({
+                        url: "http://localhost:9222/json/version",
+                        method: "GET",
+                        json: true
+                    }, (err, resp, body) => {
+                        r(body);
+                    });
+                });
+    
+                let wsUrl = versions.webSocketDebuggerUrl;
+                
+    
+                console.log(wsUrl);
+
+                browser = await this.pup.connect({
+                    browserWSEndpoint: wsUrl
+                });
+
+                browser.on("targetcreated", async target => {
+                    const page = await target.page();
+                    if(page && page.url && (await page.url()).includes("prompt.html")) {
+                        await page.setViewport({
+                            width: 365,
+                            height: 135
+                        });
+                    }
+                });
+            }
+            if(!this.browser) this.browser = browser;
+
+            let pages = await this.browser.pages();
+            for(let i = 0; i < pages.length; i++) {
+                let page = pages[i];
+                if((await page.url()).includes(this.taskID)) {
+                    this.page = page;
+                } else {
+                    if((await page.url()).includes("localhost:3030")) {
+                        await page.setViewport({
+                            width: global.browserToolWindow.getSize()[0],
+                            height: global.browserToolWindow.getSize()[1]
+                        });
+                        mainPage = page;
+                    }
+                }
+            }
+
+
+
+
+
+        } else {
+            this.browser = await this.pup.launch(options);
+            this.page = await this.browser.newPage();
+        }
         // options["executablePath"] = global.customChromeLocation;
         // let chromeArgKey = global.argToken;
         // console.log(chromeArgKey);
         // options["args"].push('--apples_and_oranges=' + chromeArgKey);
 
-        this.browser = await this.pup.launch(options);
-        this.page = await this.browser.newPage();
-        this._page = new PageWrapper(this.page);
+        const target = this.page.target();
+        this.session = await target.createCDPSession();
+        this._page = new PageWrapper(this.page, this.session);
 
+
+        await this.page.setUserAgent(this.userAgent);
+        await this.session.send("Page.enable");
+        await this.session.send("Runtime.enable");
         await this._page.newDocument();
 
         
@@ -711,37 +933,31 @@ class BrowserInstance {
                 console.log(" (JS) ".green + msg.args()[i]);
         });
 
-        this.width = 375;
-        this.height = 812;
 
-        if(this.emulation !== "iPhone") {
-            this.width = 900;
-            this.height = 800;
-        }
-
-        await this.page.setViewport({width: this.width , height: this.height, deviceScaleFactor: 1, isMobile: this.emulation === "iPhone", hasTouch: this.emulation === "iPhone"});
+        await this.page.setViewport({width: this.width , height: this.height, deviceScaleFactor: 1, isMobile: this.emulation === "iphone", hasTouch: this.emulation === "iphone"});
 
 
         await this.page.goto(this.siteURL);
 
-        const target = this.page.target();
-        this.session = await target.createCDPSession();
-        await this.session.send("Page.enable");
 
-        await this.session.on("Page.screencastFrame", (data) => {
+        this.isLowQuality = true;
+
+        await this.session.on("Page.screencastFrame", async (data) => {
             this.base64 = data.data;
+            this.session.send("Page.screencastFrameAck", {
+                sessionId: data.sessionId
+            });
             global.browserToolWindow.webContents.send("hasPreview", {
                 uuid: this.taskID,
                 base64: `data:image/png;base64, ${this.base64}`
-            });
-            this.session.send("Page.screencastFrameAck", {
-                sessionId: data.sessionId
             });
         });
 
         await this.session.send("Page.startScreencast", {
             format: "jpeg",
             quality: 100,
+            maxWidth: this.width,
+            maxHeight: this.height,
             everyNthFrame: 1,
         });
 
@@ -757,7 +973,17 @@ class BrowserInstance {
         this.addClickWait = true;
         this.clickWait = 200;
         this.isSpamming = false;
+
+        setInterval(() => {
+            if(this.queue) {
+                global.browserToolWindow.webContents.send("queueUpdate", {
+                    uuid: this.taskID.toString(),
+                    queue: this.queue.length
+                });
+            }
+        }, 200);
     }
+
 
     async spam () {
         this.isSpamming = true;
@@ -867,7 +1093,7 @@ class BrowserInstance {
 
         if(!this.didError) {
             global.browserToolWindow.webContents.send("showError", {
-                url: this.url(),
+                url: /*this.url()*/ "error",
             });
         }
 
@@ -958,7 +1184,7 @@ class BrowserInstance {
                 let change = 0;
                 if(this.lastTime) change = Date.now() - this.lastTime;
                 this.lastTime = Date.now();
-                console.log(`[${change}ms] `.white + "Processing ".gray + type.cyan + " with ".gray + (data ? JSON.stringify(data).white : "{ }".white) + " - left in queue: ".gray + this.queue.length.toString().cyan);
+                console.log(`[${change}ms] `.white + "Processing ".gray + type.cyan + " with ".gray + (data ? JSON.stringify(data).white : "{ }".white) + " - `left in queue`: ".gray + this.queue.length.toString().cyan);
                 resolve(); // allow command to execute
             }
 
@@ -976,47 +1202,41 @@ class BrowserInstance {
 
 
     _waitFor () {
-        return new Promise(r => {
-            setTimeout(async () => {
-                const pageCaughtUp = () => {
-                    let q = this.queue.shift();
-                    if(q) {
-                        // console.log(q);
-                        // if(!q.b) this.queueReady = false;
-
-                        q.resolve(); // execute next command in queue
-                    } else {
-                        this.queueReady = true; // nothing left in queue, we can use it again
-                    }
-                }
-
-                let i = 0;
-                let interval = setInterval(async () => {
-                    try {
-                        await this._page.tryEvaluate();
-                        clearInterval(interval);
-                        pageCaughtUp();
-                        r();
-                    } catch (err) { 
-                        if(i % 2 === 0) console.log(`${this.taskID} ...waiting for page to catch up`.bgRed);
-                        i++;
-                    }
-                }, 20);
-
-                // try {
-                //     await this.page.evaluate(() => { return location.href });
-                //     this.queueReady = true;
-                //     r();
-                //     ready();
-                // } catch (err) {
-                //     await this.page.waitForNetworkIdle({
-                //         timeout: 10000,
+        return new Promise(async r => {
+            const pageCaughtUp = () => {
+                // this.screenshot().then(base64 => {
+                //     global.browserToolWindow.webContents.send("hasPreview", {
+                //         uuid: this.taskID,
+                //         base64: `data:image/png;base64, ${base64}`
                 //     });
-                //     this.queueReady = true;
-                //     r();
-                //     ready();
-                // }
-            }, 0);
+                // })
+
+                let q = this.queue.shift();
+                if(q) {
+                    // console.log(q);
+                    // if(!q.b) this.queueReady = false;
+
+                    q.resolve(); // execute next command in queue
+                } else {
+                    this.queueReady = true; // nothing left in queue, we can use it again
+                }
+            }
+
+            let i = 0;
+            let interval = -1;
+            const func = async () => {
+                try {
+                    await this._page.tryEvaluate();
+                    if(interval !== -1) clearInterval(interval);
+                    pageCaughtUp();
+                    r();
+                } catch (err) { 
+                    if(i % 2 === 0) console.log(`${this.taskID} ...waiting for page to catch up`.bgRed);
+                    i++;
+                }
+            }
+            func();
+            interval = setInterval(func, 200);
         });
     }
 
@@ -1046,6 +1266,7 @@ class BrowserInstance {
 
             if(type === "path") {
                 // get JSHandle of DOM element
+                console.log("Waiting for selector: " + selector);
                 await this.page.waitForSelector(value, {
                     visible: true,
                     timeout: 2000,
@@ -1101,8 +1322,10 @@ class BrowserInstance {
 
         // console.log("Fetch element at " + x + " " + y);
         // await this._queue("_element", {x, y});
-        return await this._page.selector(x, y, type, variableName);
-
+        console.log("STARTING FIND SELECTOR");
+        let v = await this._page.selector(x, y, type, variableName);
+        console.log("FOUND SELECTOR");
+        return v;
     }
 
     async waitForSelector (selector) {
@@ -1134,9 +1357,6 @@ class BrowserInstance {
     }
     async _keyElementArray(q) {
         const elementHandle = await this.elementFromSelector(q.selector);
-        
-        console.log("HANDLE");
-        console.log(elementHandle);
 
         if(q.text.includes("vars?")) {
             let variable = q.text.split("vars?")[1];
@@ -1150,6 +1370,40 @@ class BrowserInstance {
     
     }
 
+
+    async startScreencast () {
+        // console.log("Using quality 100".cyan);
+        // await this.session.send("Page.stopScreencast");
+        // return new Promise(r => {
+        //     setTimeout(async () => {
+        //         await this.session.send("Page.startScreencast", {
+        //             format: "jpeg",
+        //             quality: 100,
+        //             // maxWidth: this.width,
+        //             // maxHeight: this.height,
+        //             everyNthFrame: 1,
+        //         });
+        //         r();
+        //     }, 100);
+        // })
+    }
+
+    async stopScreencast () {
+        // console.log("Using quality 10.2".cyan);
+        // await this.session.send("Page.stopScreencast");
+        // return new Promise(r => {
+        //     setTimeout(async () => {
+        //         await this.session.send("Page.startScreencast", {
+        //             format: "jpeg",
+        //             quality: 5,
+        //             // maxWidth: this.width,
+        //             // maxHeight: this.height,
+        //             everyNthFrame: 1,
+        //         });
+        //         r();
+        //     }, 100);
+        // })
+    }
 
     // this needs to be [key, mode, element] since the arguments are directly serialized
     async keyElement (mode, key, selector) {
@@ -1209,6 +1463,7 @@ class BrowserInstance {
     }
     async _select (q) {
         await this._queue("select", q);
+        console.log(q);
         await this.page.select(q.selector, q.value);
         await this._waitFor();
     }
@@ -1237,10 +1492,10 @@ class BrowserInstance {
         // await this.waitForSelector(q.selector);
         this.lastClickedSelector = q.selector;
         const element = await this.elementFromSelector(q.selector);
-        if(!element) {
-            await this._retry(this._clickElement, q);
-            return;
-        }
+        // if(!element) {
+        //     await this._retry(this._clickElement, q);
+        //     return;
+        // }
 
         const box = await element.boundingBox();
         let ripple = {
@@ -1260,9 +1515,14 @@ class BrowserInstance {
     // user originated events
     async click (x, y, mode, absolute, rightClick, middleClick) {
         if(absolute) {
-            if(mode === "mouseup") return;
+            if(mode === "mouseup") {
+                if(this.disableNextMouseUp) {
+                    this.disableNextMouseUp = false;
+                }
+                return;
+            };
 
-            const selector = await this.selector(x, y, rightClick, middleClick); 
+            const selector = await this.selector(x, y, rightClick, middleClick);
             console.log("MiddleClick: " + middleClick);
             console.log("Selector Includes: " + selector.includes("INPUT"));
             console.log("Selector: " + selector);
@@ -1280,29 +1540,66 @@ class BrowserInstance {
                     await this.keyElementArray(selector, `vars?${v}`);
                     return;
                 }
+            } else if(selector.includes("SELECT")) {
+                const element = await this.elementFromSelector(selector);
+                const select = await this._page.getSelect(element);
+
+                if(select && select !== false) {
+                    this.disableNextMouseUp = true;
+    
+                    select["pageWidth"] = this.width;
+                    select["pageHeight"] = this.height;
+                    select["uuid"] = this.taskID;
+                    global.browserToolWindow.webContents.send("spawnSelect", select);
+                    return;
+                }
             }
             await this._clickElement({ mode, selector });
         } else {
+            if(mode === "mouseup") {
+                if(this.disableNextMouseUp) {
+                    this.disableNextMouseUp = false;
+                }
+                return;
+            };
+
+            const selector = await this.selector(x, y, false, false);
+            
+            if(selector.includes("SELECT")) {
+                const element = await this.elementFromSelector(selector);
+                const select = await this._page.getSelect(element);
+
+                if(select && select !== false) {
+                    this.disableNextMouseUp = true;
+    
+                    select["pageWidth"] = this.width;
+                    select["pageHeight"] = this.height;
+                    select["uuid"] = this.taskID;
+                    global.browserToolWindow.webContents.send("spawnSelect", select);
+                    return;
+                }
+            }
+        
             await this._click({x, y, mode});
         }
     }
-    async _click (q, skip) {
+    async _click (q) {
         let x = q.x;
         let y = q.y;
         let type = q.mode;
 
 
-        if(!skip) await this._queue("click", q, skip);
+        await this._queue("click", q);
 
         this._recentClick();
 
 
         const selector = await this.selector(x, y, false);
         const element = await this.elementFromSelector(selector);
-        if(!element) {
-            await this._retry(this._click, q);
-            return;
-        }
+        // if(!element) {
+        //     await this._retry(this._click, q);
+        //     return;
+        // }
         const box = await element.boundingBox();
 
         let ripple = {
@@ -1320,41 +1617,15 @@ class BrowserInstance {
         x = x * this.width;
         y = y * this.height;
 
-        if(type === "mousedown") {
-            const select = await this._page.getSelect(x, y);
 
-            if(select === false) {
-                await this.page.mouse.click(x, y);
-                // await this.page.waitForTimeout(20);
-                // await this.page.mouse.move(x, y);
-                // await this.page.waitForTimeout(50);
-                // await this.page.mouse.down();
-            } else {
-                // TODO: Prompt <select> on UI preview
-                this.disableNextMouseUp = true;
-
-                select["pageWidth"] = this.width;
-                select["pageHeight"] = this.height;
-                select["uuid"] = this.taskID;
-                global.browserToolWindow.webContents.send("spawnSelect", select);
-
-            }
-        } else if(type === "mouseup") {
-            if(this.disableNextMouseUp) {
-                this.disableNextMouseUp = false;
-                return;
-            }
-            // await this.page.mouse.move(x, y);
-            // await this.page.waitForTimeout(20);
-            // await this.page.mouse.up();
-            // await this.page.waitForTimeout(50);
-        }
-        if(!skip) await this._waitFor();
+        await this.page.mouse.click(x, y);
+        await this._waitFor();
     }
 
     async playback (filePath) {
         return new Promise(async resolve => {
             const fs = require("fs");
+            console.log("(Playback) Reading file: ".gray + filePath.cyan);
             const queue = JSON.parse(fs.readFileSync(filePath, "utf8"));
             for(let i = 0; i < queue.length; i++) {
                 const q = queue[i];
@@ -1454,21 +1725,33 @@ class BrowserInstance {
     }
 
 
-    async scroll (x, y, scrollX, scrollY) {
-        await this._scroll({x, y, scrollX, scrollY});
+    async scrollSync (x, y, origin) {
+        let q = { x, y }
+
+        await this._queue("scrollSync", q);
+
+        if(this.taskID !== origin) {
+            await this._page.scrollBy(x, y);
+        }
+
+        await this._waitFor();
+    }
+
+
+
+    async scroll (x, y) {
+        await this._scroll({x, y});
     }
     async _scroll (q) {
         let x = q.x;
         let y = q.y;
-        let scrollX = q.scrollX;
-        let scrollY = q.scrollY;
 
         await this._queue("scroll", q);
-        await this.page.mouse.wheel({
+        this.page.mouse.wheel({
             deltaX: x,
             deltaY: y,
         });
-        await this._page.scroll(scrollX, scrollY);
+        // await this._page.scroll(x, y);
         await this._waitFor();
     }
 
@@ -1487,4 +1770,14 @@ class BrowserInstance {
 }
 // BROWSER-INSTANCE-END
 
-module.exports = BrowserInstance;
+module.exports = {
+    init: (_BrowserWindow, _ipcMain, _session) => {
+        BrowserWindow = _BrowserWindow;
+        ipcMain = _ipcMain;
+        session = _session;
+    },
+    resize: (width, height) => {
+        if(mainPage) mainPage.setViewport({ width, height });
+    },
+    BrowserInstance: BrowserInstance
+}

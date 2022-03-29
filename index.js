@@ -25,7 +25,8 @@ const {
     session,
     dialog,
     app,
-    BrowserWindow
+    BrowserWindow,
+    ipcRenderer
 } = require("electron");
 
 const chromePaths = require("chrome-paths");
@@ -34,8 +35,10 @@ if(!chromePaths.chrome || !require("fs").existsSync(chromePaths.chrome)) {
     process.exit(-1);
 }
 
+app.commandLine.appendSwitch("remote-debugging-port", "9222");
 
 const createWindow = () => {
+
     const win = new BrowserWindow({
         width: 1200,
         height: 800,
@@ -50,6 +53,10 @@ const createWindow = () => {
             nativeWindowOpen: true,
         },
         show: false
+    });
+
+    win.on("resize", (data) => {
+        BrowserInstance.resize(win.getSize()[0], win.getSize()[1]);
     });
 
     // win.maximize();
@@ -74,10 +81,13 @@ app.whenReady().then(() => {
 
 // DEV-IMPORTS-START
 const BrowserManager = require("./BrowserManager.js");
-const BrowserInstance = require("./BrowserInstance.js");
+let BrowserInstance = require("./BrowserInstance.js");
+const { Browser } = require("puppeteer");
+BrowserInstance.init(BrowserWindow, ipcMain, session);
+let BrowserInstanceClass = BrowserInstance.BrowserInstance;
 // DEV-IMPORTS-END
 
-const browserManager = new BrowserManager(BrowserInstance);
+const browserManager = new BrowserManager(BrowserInstanceClass);
 
 const cleanup = async () => {
     console.log("Cleaning up browser instances");
